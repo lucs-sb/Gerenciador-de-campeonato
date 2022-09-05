@@ -1,5 +1,7 @@
 package api.championship.manager.execeptionHandler;
 
+import api.championship.manager.execeptionHandler.exceptions.MessageBadRequestException;
+import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,5 +17,12 @@ public class MessageAdvince {
     public ResponseEntity<MessageExceptionHandler> messageNotFound(MessageNotFoundException exception){
         MessageExceptionHandler error = new MessageExceptionHandler(new Date(), HttpStatus.NOT_FOUND.value(), exception.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MessageBadRequestException.class)
+    public ResponseEntity<MessageExceptionHandler> messageBadRequest(MessageBadRequestException exception){
+        MessageExceptionHandler error = new MessageExceptionHandler(new Date(), HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
