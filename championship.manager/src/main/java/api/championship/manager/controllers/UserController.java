@@ -23,10 +23,7 @@ public class UserController {
     public ResponseEntity<Optional<User>> getUserById(@PathVariable Long id) throws Exception{
         try {
             Optional<User> user = service.findUserById(id);
-            if(user.isPresent())
-               return new ResponseEntity<>(user, HttpStatus.OK);
-            else
-               return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }catch (Exception e){
             throw new Exception(e);
         }
