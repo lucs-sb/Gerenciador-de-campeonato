@@ -1,4 +1,4 @@
-package api.championship.manager.execeptionHandler;
+package api.championship.manager.execeptionHandler.exceptions;
 
 public class MessageNotFoundException extends RuntimeException {
     private String message;

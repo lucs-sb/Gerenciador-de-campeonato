@@ -1,6 +1,6 @@
 package api.championship.manager.security;
 
-import api.championship.manager.execeptionHandler.MessageNotFoundException;
+import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Login;
 import api.championship.manager.repositories.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;

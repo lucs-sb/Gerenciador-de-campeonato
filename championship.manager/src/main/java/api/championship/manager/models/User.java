@@ -1,5 +1,6 @@
 package api.championship.manager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class User {
     private String email;
     @NotBlank
     private String name;
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Login login;
 }

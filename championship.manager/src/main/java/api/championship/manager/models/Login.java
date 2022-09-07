@@ -35,6 +35,8 @@ public class Login implements UserDetails {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public Login(){}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
