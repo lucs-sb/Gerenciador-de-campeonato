@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -24,4 +25,12 @@ public class User {
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Login login;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_championship",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "championship_id")
+    )
+    private List<Championship> championships;
 }
