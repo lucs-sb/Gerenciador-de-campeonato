@@ -47,6 +47,8 @@ public class ChampionshipService {
             championship.setChampionship_configuration(newChampionship.getChampionship_configuration());
             repository.save(championship);
 
+            user.get().getChampionships().add(championship);
+
         }catch (Exception e){
             throw e;
         }
