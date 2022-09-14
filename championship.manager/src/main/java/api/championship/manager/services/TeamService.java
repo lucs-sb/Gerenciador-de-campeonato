@@ -1,8 +1,10 @@
 package api.championship.manager.services;
 
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
+import api.championship.manager.models.Championship;
 import api.championship.manager.models.Team;
 import api.championship.manager.models.User;
+import api.championship.manager.repositories.ChampionshipRepository;
 import api.championship.manager.repositories.TeamRepository;
 import api.championship.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class TeamService {
     private TeamRepository repository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ChampionshipRepository championshipRepository;
 
     @Transactional(readOnly = true)
     public Page<Team> getAllTeams(Long user_id, Pageable pageable){
@@ -55,6 +59,43 @@ public class TeamService {
                 throw new MessageNotFoundException("Usuário não encontrado");
 
             return repository.findByNameOrAbbreviation(user_id, search);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Team> getAllTeamsThatAreNotInTheChampionship(Long user_id, Long championship_id){
+        try {
+            Optional<User> user = userRepository.findById(user_id);
+            if (user.isEmpty())
+                throw new MessageNotFoundException("Usuário não encontrado");
+
+            List<Team> teams = repository.findAll();
+            List<Team> championship_teams = repository.findByUserIdAndChampionshipId(user_id, championship_id);
+
+            championship_teams.forEach(team -> {
+                teams.removeIf(team1 -> team1.getId().equals(team.getId()));
+            });
+
+            return teams;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void addTeamInChampionship(Long championship_id, List<Long> teams_ids){
+        try {
+            Optional<Championship> championship = championshipRepository.findById(championship_id);
+            if (championship.isEmpty())
+                throw new MessageNotFoundException("Campeonato não encontrado");
+
+            teams_ids.forEach(id -> {
+            Optional<Team> team = repository.findById(id);
+            team.ifPresent(championship.get().getTeams()::add);
+            team.ifPresent(value -> value.getChampionships().add(championship.get()));
+            });
         }catch (Exception e){
             throw e;
         }

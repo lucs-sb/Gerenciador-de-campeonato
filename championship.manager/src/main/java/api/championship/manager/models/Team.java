@@ -21,6 +21,7 @@ public class Team {
     @JsonIgnore
     @ManyToMany(mappedBy = "teams")
     private List<Championship> championships;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
