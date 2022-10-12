@@ -30,7 +30,7 @@ public class Login implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
