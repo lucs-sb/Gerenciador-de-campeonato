@@ -59,7 +59,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity getMatches(@PathVariable Long id) throws Exception{
+    public ResponseEntity deleteMatch(@PathVariable Long id) throws Exception{
         try {
             matchService.deleteMatch(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
