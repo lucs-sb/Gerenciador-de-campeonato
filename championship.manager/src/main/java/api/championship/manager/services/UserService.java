@@ -60,9 +60,6 @@ public class UserService {
             login.setUser(user.get());
             loginRepository.saveAndFlush(login);
 
-            user.get().setLogin(login);
-            repository.save(user.get());
-
         }catch (Exception e){
             throw e;
         }
@@ -75,7 +72,9 @@ public class UserService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            Optional<Login> login = loginRepository.findById(user.get().getLogin().getId());
+            Optional<Login> login = loginRepository.findByUser(user.get().getId());
+            if (login.isEmpty())
+                throw new MessageNotFoundException("Usuário não encontrado");
 
             if (!updateUser.getName().isEmpty())
                  user.get().setName(updateUser.getName());
@@ -87,8 +86,6 @@ public class UserService {
 
             if (!updateUser.getPassword().isEmpty())
                 login.get().setPassword(updateUser.getPassword());
-
-            user.get().setLogin(login.get());
 
             repository.save(user.get());
             loginRepository.save(login.get());

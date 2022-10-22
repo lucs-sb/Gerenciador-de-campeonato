@@ -1,23 +1,23 @@
 package api.championship.manager.models;
 
+import api.championship.manager.models.Team;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_player")
 @Getter
 @Setter
-public class User {
+public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Email
-    private String email;
-    @NotBlank
     private String name;
+    @OneToMany
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    public Player(){}
 }

@@ -44,10 +44,8 @@ public class ChampionshipService {
             championship.setDescription(newChampionship.getDescription());
             championship.setAward(newChampionship.getAward());
             championship.setNumber_of_teams(newChampionship.getNumber_of_teams());
-            championship.setChampionship_configuration(newChampionship.getChampionship_configuration());
+            championship.setStatus(newChampionship.getStatus());
             repository.save(championship);
-
-            user.get().getChampionships().add(championship);
 
         }catch (Exception e){
             throw e;
@@ -76,7 +74,7 @@ public class ChampionshipService {
             championship.get().setDescription(newChampionship.getDescription());
             championship.get().setAward(newChampionship.getAward());
             championship.get().setNumber_of_teams(newChampionship.getNumber_of_teams());
-            championship.get().setChampionship_configuration(newChampionship.getChampionship_configuration());
+            championship.get().setStatus(newChampionship.getStatus());
             repository.save(championship.get());
 
         }catch (Exception e){
