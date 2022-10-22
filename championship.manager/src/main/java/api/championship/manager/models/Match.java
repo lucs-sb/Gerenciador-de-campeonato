@@ -1,5 +1,7 @@
 package api.championship.manager.models;
 
+import api.championship.manager.enums.MatchStatus;
+import api.championship.manager.enums.MatchType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +29,8 @@ public class Match {
     private LocalDateTime time;
     private String place;
     private String scoreboard;
+    private MatchStatus status;
+    private MatchType type;
 
     public Match(){}
 }

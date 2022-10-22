@@ -27,7 +27,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity addMatch(@RequestBody Event event) throws Exception{
+    public ResponseEntity addEvent(@RequestBody Event event) throws Exception{
         try {
             eventService.addEvent(event);
             return new ResponseEntity<>(HttpStatus.CREATED);

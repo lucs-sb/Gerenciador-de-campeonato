@@ -10,8 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ChampionshipService {
@@ -19,6 +18,8 @@ public class ChampionshipService {
     private ChampionshipRepository repository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private GroupService groupService;
 
     public Page<Championship> getAllChampionships(Long user_id, Pageable pageable){
         try {
@@ -45,8 +46,10 @@ public class ChampionshipService {
             championship.setAward(newChampionship.getAward());
             championship.setNumber_of_teams(newChampionship.getNumber_of_teams());
             championship.setStatus(newChampionship.getStatus());
+            championship.setTeams(newChampionship.getTeams());
             repository.save(championship);
 
+            groupService.groupDraw(championship);
         }catch (Exception e){
             throw e;
         }

@@ -1,6 +1,5 @@
 package api.championship.manager.models;
 
-import api.championship.manager.models.Team;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 

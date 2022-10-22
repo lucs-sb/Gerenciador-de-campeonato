@@ -1,5 +1,6 @@
 package api.championship.manager.controllers;
 
+import api.championship.manager.enums.MatchType;
 import api.championship.manager.models.Match;
 import api.championship.manager.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,16 @@ public class MatchController {
     public ResponseEntity addMatch(@RequestBody Match match) throws Exception{
         try {
             matchService.addMatch(match);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
+
+    @PostMapping("/championship/{id}")
+    public ResponseEntity createKnockoutMatches(@PathVariable Long id, @RequestParam MatchType type) throws Exception{
+        try {
+            matchService.createKnockoutMatches(id, type);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (Exception e){
             throw new Exception(e);
