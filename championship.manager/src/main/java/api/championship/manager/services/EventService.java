@@ -3,9 +3,10 @@ package api.championship.manager.services;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Event;
 import api.championship.manager.models.Match;
-import api.championship.manager.models.Team;
+import api.championship.manager.models.Player;
 import api.championship.manager.repositories.EventRepository;
 import api.championship.manager.repositories.MatchRepository;
+import api.championship.manager.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class EventService {
     private EventRepository eventRepository;
     @Autowired
     private MatchRepository matchRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
     public List<Event> getEventsByMatch(Long id) {
         try {
@@ -39,8 +42,10 @@ public class EventService {
 
             Event event = new Event();
 
-            if (newEvent.getPlayer().isPresent()) {
-                Optional<Player> player = playerRepository.findById(newEvent.GetPlayer().getId());
+            if (newEvent.getPlayer().getId() != null) {
+                Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
+                if (player.isEmpty())
+                    throw new MessageNotFoundException("Jogador não encontrado");
 
                 event.setDescription(newEvent.getDescription());
                 event.setTime(newEvent.getTime());
@@ -70,8 +75,10 @@ public class EventService {
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            if (newEvent.getPlayer().isPresent()) {
-                //Optional<Player> player = playerRepository.findById(newEvent.GetPlayer().getId());
+            if (newEvent.getPlayer().getId() != null) {
+                Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
+                if (player.isEmpty())
+                    throw new MessageNotFoundException("Jogador não encontrado");
 
                 event.get().setDescription(newEvent.getDescription());
                 event.get().setTime(newEvent.getTime());

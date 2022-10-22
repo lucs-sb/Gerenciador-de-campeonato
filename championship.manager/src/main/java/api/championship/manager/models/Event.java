@@ -17,9 +17,9 @@ public class Event {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "match_id", nullable = false)
     private Match match;
-    //@ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "player_id", nullable = false)
-    //private Player player;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "player_id", nullable = false)
+    private Player player;
     private LocalDateTime time;
     private String description;
     private String value;
