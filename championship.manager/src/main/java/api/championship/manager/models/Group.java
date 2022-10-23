@@ -26,7 +26,7 @@ public class Group {
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     private List<Team> teams;
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_information_id")
     private GroupInformation group_information;
     public Group() {

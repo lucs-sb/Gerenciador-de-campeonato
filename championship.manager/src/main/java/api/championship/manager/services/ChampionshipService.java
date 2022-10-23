@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ public class ChampionshipService {
     @Autowired
     private GroupService groupService;
 
+    @Transactional(readOnly = true)
     public Page<Championship> getAllChampionships(Long user_id, Pageable pageable){
         try {
             Optional<User> user = userRepository.findById(user_id);
@@ -33,6 +35,7 @@ public class ChampionshipService {
         }
     }
 
+    @Transactional
     public void addChampionship(Long user_id, Championship newChampionship){
         try {
             Optional<User> user = userRepository.findById(user_id);
@@ -47,14 +50,16 @@ public class ChampionshipService {
             championship.setNumber_of_teams(newChampionship.getNumber_of_teams());
             championship.setStatus(newChampionship.getStatus());
             championship.setTeams(newChampionship.getTeams());
-            repository.save(championship);
+            repository.saveAndFlush(championship);
 
-            groupService.groupDraw(championship);
+            championship.setGroups(groupService.groupDraw(championship));
+            repository.save(championship);
         }catch (Exception e){
             throw e;
         }
     }
 
+    @Transactional(readOnly = true)
     public Optional<Championship> getChampionshipById(Long id) {
         try {
             Optional<Championship> championship = repository.findById(id);
@@ -67,6 +72,7 @@ public class ChampionshipService {
         }
     }
 
+    @Transactional
     public void updateChampionship(Championship newChampionship, Long id) {
         try {
             Optional<Championship> championship = repository.findById(id);
@@ -85,6 +91,7 @@ public class ChampionshipService {
         }
     }
 
+    @Transactional
     public void deleteChampionship(Long id) {
         try {
             Optional<Championship> championship = repository.findById(id);
@@ -98,6 +105,7 @@ public class ChampionshipService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Championship> getChampionshipsBySearch(Long user_id, String search) {
         try {
             Optional<User> user = userRepository.findById(user_id);

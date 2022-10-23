@@ -8,6 +8,7 @@ import api.championship.manager.models.Team;
 import api.championship.manager.repositories.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class GroupService {
     @Autowired
     private GroupInformationService groupInformationService;
 
+    @Transactional(readOnly = true)
     public List<Group> getGroupsByChampionshipId(Long championshipId){
         try {
             return groupRepository.findGroupsByChampionshipId(championshipId);
@@ -28,6 +30,7 @@ public class GroupService {
         }
     }
 
+    @Transactional
     public void updateGroup(Group newGroup){
         try {
             Optional<Group> group = groupRepository.findById(newGroup.getId());
@@ -42,7 +45,8 @@ public class GroupService {
         }
     }
 
-    public void groupDraw(Championship championship){
+    @Transactional
+    public List<Group> groupDraw(Championship championship){
         try {
             Random random = new Random();
             Group a = new Group();
@@ -105,6 +109,7 @@ public class GroupService {
 
             matchService.createMatches(championship, groups);
 
+            return groups;
         }catch (Exception ex){
             throw ex;
         }

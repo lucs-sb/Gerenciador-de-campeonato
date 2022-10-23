@@ -9,6 +9,7 @@ import api.championship.manager.repositories.MatchRepository;
 import api.championship.manager.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class EventService {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Transactional(readOnly = true)
     public List<Event> getEventsByMatch(Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -34,6 +36,7 @@ public class EventService {
         }
     }
 
+    @Transactional
     public void addEvent(Event newEvent) {
         try {
             Optional<Match> match = matchRepository.findById(newEvent.getId());
@@ -65,6 +68,7 @@ public class EventService {
         }
     }
 
+    @Transactional
     public void updateEvent(Long id, Event newEvent) {
         try {
             Optional<Event> event = eventRepository.findById(id);
@@ -98,6 +102,7 @@ public class EventService {
         }
     }
 
+    @Transactional
     public void deleteEvent(Long id) {
         try {
             Optional<Event> event = eventRepository.findById(id);

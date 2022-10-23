@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class MatchService {
     @Autowired
     private GroupInformationRepository groupInformationRepository;
 
+    @Transactional(readOnly = true)
     public Page<Match> getMatches(Long id, Pageable pageable) {
         try {
             Page<Match> matches = matchRepository.findByChampionshipId(id, pageable);
@@ -41,6 +43,7 @@ public class MatchService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Match getMatchById(Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -53,6 +56,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void addMatch(Match newMatch) {
         try {
             Optional<Championship> championship = championshipRepository.findById(newMatch.getChampionship().getId());
@@ -84,6 +88,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void updateMatch(Long id, Match newMatch) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -114,6 +119,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void deleteMatch(Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -126,6 +132,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void createMatches(Championship championship, List<Group> groups) {
         try {
             groups.forEach(group -> {
@@ -223,6 +230,7 @@ public class MatchService {
         }
     }
 
+    @Transactional(readOnly = true)
     public void createKnockoutMatches(Long championshipId, MatchType type){
         try {
             Optional<Championship> championship = championshipRepository.findById(championshipId);
@@ -247,6 +255,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     private void createQuarterFinal(Championship championship){
         try {
             Random random = new Random();
@@ -294,6 +303,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     private void createSemiFinals(Championship championship){
         try {
             List<Team> champions = new ArrayList<>();
@@ -333,6 +343,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     private void createFinal(Championship championship){
         try {
             List<Team> champions = new ArrayList<>();

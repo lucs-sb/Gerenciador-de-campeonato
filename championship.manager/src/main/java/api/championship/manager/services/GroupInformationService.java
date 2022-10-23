@@ -6,6 +6,7 @@ import api.championship.manager.models.Team;
 import api.championship.manager.repositories.GroupInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ public class GroupInformationService {
     @Autowired
     private GroupInformationRepository groupInformationRepository;
 
+    @Transactional
     public GroupInformation createGroupInformation(List<Team> teams){
         try {
             GroupInformation groupInformation = new GroupInformation();
@@ -31,6 +33,7 @@ public class GroupInformationService {
         }
     }
 
+    @Transactional
     public void updateGroupInformation(GroupInformation newGroupInformation){
         try {
             Optional<GroupInformation> groupInformation = groupInformationRepository.findById(newGroupInformation.getId());
