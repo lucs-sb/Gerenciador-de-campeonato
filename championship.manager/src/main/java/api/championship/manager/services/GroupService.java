@@ -105,7 +105,6 @@ public class GroupService {
             d.setGroup_information(groupInformationService.createGroupInformation(group_D));
 
             List<Group> groups = Arrays.asList(a, b, c, d);
-            groupRepository.saveAll(groups);
 
             matchService.createMatches(championship, groups);
 

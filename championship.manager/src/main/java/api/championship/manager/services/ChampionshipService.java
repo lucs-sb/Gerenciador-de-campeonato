@@ -53,7 +53,7 @@ public class ChampionshipService {
             repository.saveAndFlush(championship);
 
             championship.setGroups(groupService.groupDraw(championship));
-            repository.save(championship);
+
         }catch (Exception e){
             throw e;
         }
