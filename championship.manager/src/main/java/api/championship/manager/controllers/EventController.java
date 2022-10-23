@@ -5,6 +5,7 @@ import api.championship.manager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/match/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<Event>> getEvents(@PathVariable Long id) throws Exception{
         try {
             List<Event> events = eventService.getEventsByMatch(id);
@@ -27,7 +29,8 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity addMatch(@RequestBody Event event) throws Exception{
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity addEvent(@RequestBody Event event) throws Exception{
         try {
             eventService.addEvent(event);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -37,6 +40,7 @@ public class EventController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody Event event) throws Exception{
         try {
             eventService.updateEvent(id, event);
@@ -47,6 +51,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity deleteEvent(@PathVariable Long id) throws Exception{
         try {
             eventService.deleteEvent(id);

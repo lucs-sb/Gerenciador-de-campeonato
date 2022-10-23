@@ -1,5 +1,6 @@
 package api.championship.manager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +15,11 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "match_id", nullable = false)
     private Match match;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "player_id", nullable = false)
     private Player player;
     private LocalDateTime time;

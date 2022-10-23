@@ -1,18 +1,21 @@
 package api.championship.manager.services;
 
+import api.championship.manager.enums.MatchStatus;
+import api.championship.manager.enums.MatchType;
+import api.championship.manager.execeptionHandler.exceptions.MessageBadRequestException;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Championship;
+import api.championship.manager.models.Group;
 import api.championship.manager.models.Match;
 import api.championship.manager.models.Team;
-import api.championship.manager.repositories.ChampionshipRepository;
-import api.championship.manager.repositories.MatchRepository;
-import api.championship.manager.repositories.TeamRepository;
+import api.championship.manager.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MatchService {
@@ -22,7 +25,12 @@ public class MatchService {
     private ChampionshipRepository championshipRepository;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private GroupRepository groupRepository;
+    @Autowired
+    private GroupInformationRepository groupInformationRepository;
 
+    @Transactional(readOnly = true)
     public Page<Match> getMatches(Long id, Pageable pageable) {
         try {
             Page<Match> matches = matchRepository.findByChampionshipId(id, pageable);
@@ -35,6 +43,7 @@ public class MatchService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Match getMatchById(Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -47,6 +56,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void addMatch(Match newMatch) {
         try {
             Optional<Championship> championship = championshipRepository.findById(newMatch.getChampionship().getId());
@@ -69,6 +79,8 @@ public class MatchService {
             match.setTime(newMatch.getTime());
             match.setPlace(newMatch.getPlace());
             match.setScoreboard(newMatch.getScoreboard());
+            match.setType(newMatch.getType());
+            match.setStatus(newMatch.getStatus());
 
             matchRepository.save(match);
         }catch (Exception e){
@@ -76,6 +88,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void updateMatch(Long id, Match newMatch) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -97,6 +110,8 @@ public class MatchService {
             match.get().setTime(newMatch.getTime());
             match.get().setPlace(newMatch.getPlace());
             match.get().setScoreboard(newMatch.getScoreboard());
+            match.get().setType(newMatch.getType());
+            match.get().setStatus(newMatch.getStatus());
 
             matchRepository.save(match.get());
         }catch (Exception e){
@@ -104,6 +119,7 @@ public class MatchService {
         }
     }
 
+    @Transactional
     public void deleteMatch(Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
@@ -113,6 +129,247 @@ public class MatchService {
             matchRepository.delete(match.get());
         }catch (Exception e){
             throw e;
+        }
+    }
+
+    @Transactional
+    public void createMatches(Championship championship, List<Group> groups) {
+        try {
+            groups.forEach(group -> {
+                Collections.shuffle(group.getTeams());
+
+                Match match1 = new Match();
+                match1.setChampionship(championship);
+                match1.setType(MatchType.GROUP_STAGE);
+                match1.setStatus(MatchStatus.PROGRESS);
+                match1.setHome_team(group.getTeams().get(0));
+                match1.setAway_team(group.getTeams().get(2));
+
+                Match match2 = new Match();
+                match2.setChampionship(championship);
+                match2.setType(MatchType.GROUP_STAGE);
+                match2.setStatus(MatchStatus.PROGRESS);
+                match2.setHome_team(group.getTeams().get(1));
+                match2.setAway_team(group.getTeams().get(3));
+
+                Match match3 = new Match();
+                match3.setChampionship(championship);
+                match3.setType(MatchType.GROUP_STAGE);
+                match3.setStatus(MatchStatus.PROGRESS);
+                match3.setHome_team(group.getTeams().get(3));
+                match3.setAway_team(group.getTeams().get(0));
+
+                Match match4 = new Match();
+                match4.setChampionship(championship);
+                match4.setType(MatchType.GROUP_STAGE);
+                match4.setStatus(MatchStatus.PROGRESS);
+                match4.setHome_team(group.getTeams().get(2));
+                match4.setAway_team(group.getTeams().get(1));
+
+                Match match5 = new Match();
+                match5.setChampionship(championship);
+                match5.setType(MatchType.GROUP_STAGE);
+                match5.setStatus(MatchStatus.PROGRESS);
+                match5.setHome_team(group.getTeams().get(2));
+                match5.setAway_team(group.getTeams().get(3));
+
+                Match match6 = new Match();
+                match6.setChampionship(championship);
+                match6.setType(MatchType.GROUP_STAGE);
+                match6.setStatus(MatchStatus.PROGRESS);
+                match6.setHome_team(group.getTeams().get(1));
+                match6.setAway_team(group.getTeams().get(0));
+
+                Match match7 = new Match();
+                match7.setChampionship(championship);
+                match7.setType(MatchType.GROUP_STAGE);
+                match7.setStatus(MatchStatus.PROGRESS);
+                match7.setHome_team(group.getTeams().get(3));
+                match7.setAway_team(group.getTeams().get(2));
+
+                Match match8 = new Match();
+                match8.setChampionship(championship);
+                match8.setType(MatchType.GROUP_STAGE);
+                match8.setStatus(MatchStatus.PROGRESS);
+                match8.setHome_team(group.getTeams().get(0));
+                match8.setAway_team(group.getTeams().get(1));
+
+                Match match9 = new Match();
+                match9.setChampionship(championship);
+                match9.setType(MatchType.GROUP_STAGE);
+                match9.setStatus(MatchStatus.PROGRESS);
+                match9.setHome_team(group.getTeams().get(0));
+                match9.setAway_team(group.getTeams().get(3));
+
+                Match match10 = new Match();
+                match10.setChampionship(championship);
+                match10.setType(MatchType.GROUP_STAGE);
+                match10.setStatus(MatchStatus.PROGRESS);
+                match10.setHome_team(group.getTeams().get(1));
+                match10.setAway_team(group.getTeams().get(2));
+
+                Match match11 = new Match();
+                match11.setChampionship(championship);
+                match11.setType(MatchType.GROUP_STAGE);
+                match11.setStatus(MatchStatus.PROGRESS);
+                match11.setHome_team(group.getTeams().get(2));
+                match11.setAway_team(group.getTeams().get(0));
+
+                Match match12 = new Match();
+                match12.setChampionship(championship);
+                match12.setType(MatchType.GROUP_STAGE);
+                match12.setStatus(MatchStatus.PROGRESS);
+                match12.setHome_team(group.getTeams().get(3));
+                match12.setAway_team(group.getTeams().get(1));
+
+                List<Match> matches = Arrays.asList(match1, match2, match3, match4, match5, match6, match7, match8, match9, match10, match11, match12);
+                matchRepository.saveAll(matches);
+            });
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void createKnockoutMatches(Long championshipId, MatchType type){
+        try {
+            Optional<Championship> championship = championshipRepository.findById(championshipId);
+            if (championship.isEmpty())
+                throw new MessageNotFoundException("Campeonato não encontrado");
+
+            switch (type){
+                case QUARTER_FINAL:
+                    createQuarterFinal(championship.get());
+                    break;
+                case SEMIFINALS:
+                    createSemiFinals(championship.get());
+                    break;
+                case FINAL:
+                    createFinal(championship.get());
+                    break;
+                default:
+                    throw new MessageBadRequestException("Tipo de jogos eliminatórios inválido");
+            }
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void createQuarterFinal(Championship championship){
+        try {
+            Random random = new Random();
+            List<Team> first_placed = new ArrayList<>();
+            List<Team> second_placed = new ArrayList<>();
+            Team first;
+            Team second;
+            int index;
+            int size = 4;
+
+            List<Group> groups = groupRepository.findGroupsByChampionshipId(championship.getId());
+            if (groups.isEmpty())
+                throw new MessageNotFoundException("Grupos não encontrados");
+
+            groups.forEach(group -> {
+                first_placed.add(group.getGroup_information().getFirst_place());
+                second_placed.add(group.getGroup_information().getSecond_place());
+            });
+
+            while (!first_placed.isEmpty() && !second_placed.isEmpty()){
+                Collections.shuffle(first_placed);
+                Collections.shuffle(second_placed);
+
+                index = random.nextInt(size);
+                first = first_placed.get(index);
+                first_placed.remove(index);
+
+                index = random.nextInt(size);
+                second = second_placed.get(index);
+                second_placed.remove(index);
+
+                Match match1 = new Match();
+                match1.setChampionship(championship);
+                match1.setType(MatchType.QUARTER_FINAL);
+                match1.setStatus(MatchStatus.PROGRESS);
+                match1.setHome_team(first);
+                match1.setAway_team(second);
+
+                matchRepository.save(match1);
+
+                size -= 1;
+            }
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void createSemiFinals(Championship championship){
+        try {
+            List<Team> champions = new ArrayList<>();
+
+            List<Match> matchesQuarterFinal = matchRepository.findMatchesByTypeAndStatusAndChampionshipId(championship.getId(), MatchType.QUARTER_FINAL.ordinal(), MatchStatus.CLOSED.ordinal());
+            if (matchesQuarterFinal.isEmpty() || matchesQuarterFinal.size() < 4)
+                throw new MessageBadRequestException("Todos os jogos das quartas devem estar encerrados");
+
+            matchesQuarterFinal.forEach(match -> {
+                String[] scoreboard = match.getScoreboard().split("x");
+                if (Integer.parseInt(scoreboard[0]) > Integer.parseInt(scoreboard[1]))
+                    champions.add(match.getHome_team());
+                else
+                    champions.add(match.getAway_team());
+            });
+
+            Collections.shuffle(champions);
+
+            Match match1 = new Match();
+            match1.setChampionship(championship);
+            match1.setType(MatchType.SEMIFINALS);
+            match1.setStatus(MatchStatus.PROGRESS);
+            match1.setHome_team(champions.get(0));
+            match1.setAway_team(champions.get(1));
+
+            Match match2 = new Match();
+            match2.setChampionship(championship);
+            match2.setType(MatchType.SEMIFINALS);
+            match2.setStatus(MatchStatus.PROGRESS);
+            match2.setHome_team(champions.get(2));
+            match2.setAway_team(champions.get(3));
+
+            List<Match> matches = Arrays.asList(match1, match2);
+            matchRepository.saveAll(matches);
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void createFinal(Championship championship){
+        try {
+            List<Team> champions = new ArrayList<>();
+
+            List<Match> matchesSemiFinal = matchRepository.findMatchesByTypeAndStatusAndChampionshipId(championship.getId(), MatchType.SEMIFINALS.ordinal(), MatchStatus.CLOSED.ordinal());
+            if (matchesSemiFinal.isEmpty() || matchesSemiFinal.size() < 2)
+                throw new MessageBadRequestException("Todos os jogos das semis devem estar encerrados");
+
+            matchesSemiFinal.forEach(match -> {
+                String[] scoreboard = match.getScoreboard().split("x");
+                if (Integer.parseInt(scoreboard[0]) > Integer.parseInt(scoreboard[1]))
+                    champions.add(match.getHome_team());
+                else
+                    champions.add(match.getAway_team());
+            });
+
+            Match match1 = new Match();
+            match1.setChampionship(championship);
+            match1.setType(MatchType.FINAL);
+            match1.setStatus(MatchStatus.PROGRESS);
+            match1.setHome_team(champions.get(0));
+            match1.setAway_team(champions.get(1));
+
+            matchRepository.save(match1);
+        }catch (Exception ex){
+            throw ex;
         }
     }
 }

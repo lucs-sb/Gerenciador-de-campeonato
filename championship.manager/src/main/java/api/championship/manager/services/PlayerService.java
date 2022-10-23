@@ -7,6 +7,7 @@ import api.championship.manager.repositories.PlayerRepository;
 import api.championship.manager.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class PlayerService {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Transactional
     public void addPlayer(Player newPlayer){
         try {
             Optional<Team> team = teamRepository.findById(newPlayer.getTeam().getId());
@@ -32,6 +34,7 @@ public class PlayerService {
         }
     }
 
+    @Transactional
     public void updatePlayer(Player newPlayer){
         try {
             Optional<Team> team = teamRepository.findById(newPlayer.getTeam().getId());
@@ -51,6 +54,7 @@ public class PlayerService {
         }
     }
 
+    @Transactional
     public void deletePlayer(Long id){
         try {
             Optional<Player> player = playerRepository.findById(id);

@@ -5,6 +5,7 @@ import api.championship.manager.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ public class PlayerController {
     private PlayerService playerService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity addPlayer(@RequestBody Player player) throws Exception{
         try {
             playerService.addPlayer(player);
@@ -25,6 +27,7 @@ public class PlayerController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity updatePlayer(@RequestBody Player player) throws Exception{
         try {
             playerService.updatePlayer(player);
@@ -35,6 +38,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity deletePlayer(@PathVariable Long id) throws Exception{
         try {
             playerService.deletePlayer(id);

@@ -25,6 +25,13 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "team_player",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
+    )
+    private List<Player> players;
 
     public Team(){}
 }

@@ -1,10 +1,13 @@
 package api.championship.manager.models;
 
+import api.championship.manager.enums.MatchStatus;
+import api.championship.manager.enums.MatchType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_match")
@@ -14,7 +17,7 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "championship_id", nullable = false)
     private Championship championship;
     @ManyToOne
@@ -27,6 +30,10 @@ public class Match {
     private LocalDateTime time;
     private String place;
     private String scoreboard;
+    private MatchStatus status;
+    private MatchType type;
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
+    private List<Event> events;
 
     public Match(){}
 }

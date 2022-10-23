@@ -24,13 +24,23 @@ public class Championship {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "championship_team",
             joinColumns = @JoinColumn(name = "championship_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     private List<Team> teams;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "championship_group",
+            joinColumns = @JoinColumn(name = "championship_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private List<Group> groups;
+    @JsonIgnore
+    @OneToMany(mappedBy = "championship", cascade = CascadeType.ALL)
+    private List<Match> Matches;
 
     public Championship(){}
 }
