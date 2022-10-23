@@ -109,7 +109,7 @@ public class GroupService {
 
             matchService.createMatches(championship, groups);
 
-            return groups;
+            return new ArrayList<>(groups);
         }catch (Exception ex){
             throw ex;
         }

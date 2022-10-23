@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_match")
@@ -31,6 +32,8 @@ public class Match {
     private String scoreboard;
     private MatchStatus status;
     private MatchType type;
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
+    private List<Event> events;
 
     public Match(){}
 }

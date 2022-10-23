@@ -1,6 +1,7 @@
 package api.championship.manager.models;
 
 import api.championship.manager.enums.GroupName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private GroupName name_group;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "championship_id")
     private Championship championship;
