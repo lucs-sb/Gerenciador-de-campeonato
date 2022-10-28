@@ -2,8 +2,10 @@ package api.championship.manager.services;
 
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Championship;
+import api.championship.manager.models.Team;
 import api.championship.manager.models.User;
 import api.championship.manager.repositories.ChampionshipRepository;
+import api.championship.manager.repositories.TeamRepository;
 import api.championship.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,8 @@ public class ChampionshipService {
     private UserRepository userRepository;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Transactional(readOnly = true)
     public Page<Championship> getAllChampionships(Long user_id, Pageable pageable){
@@ -42,6 +46,11 @@ public class ChampionshipService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
+            List<Team> teamList = new ArrayList<>();
+            newChampionship.getTeams().forEach(t -> {
+                teamRepository.findById(t.getId()).ifPresent(teamList::add);
+            });
+
             Championship championship = new Championship();
             championship.setUser(user.get());
             championship.setName(newChampionship.getName());
@@ -49,7 +58,7 @@ public class ChampionshipService {
             championship.setAward(newChampionship.getAward());
             championship.setNumber_of_teams(newChampionship.getNumber_of_teams());
             championship.setStatus(newChampionship.getStatus());
-            championship.setTeams(newChampionship.getTeams());
+            championship.setTeams(teamList);
             repository.saveAndFlush(championship);
 
             championship.setGroups(groupService.groupDraw(championship));

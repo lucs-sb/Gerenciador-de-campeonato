@@ -24,7 +24,7 @@ public class Championship {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "championship_team",
             joinColumns = @JoinColumn(name = "championship_id"),

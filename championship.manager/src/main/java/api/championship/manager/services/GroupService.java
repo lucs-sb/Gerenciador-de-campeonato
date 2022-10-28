@@ -53,7 +53,7 @@ public class GroupService {
             Group b = new Group();
             Group c = new Group();
             Group d = new Group();
-            List<Team> teams = championship.getTeams();
+            List<Team> teams = new ArrayList<>(championship.getTeams());
             List<Team> group_A = new ArrayList<>();
             List<Team> group_B = new ArrayList<>();
             List<Team> group_C = new ArrayList<>();
