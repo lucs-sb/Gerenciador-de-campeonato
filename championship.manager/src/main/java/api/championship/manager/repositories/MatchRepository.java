@@ -13,7 +13,7 @@ import java.util.List;
 public interface MatchRepository extends JpaRepository<Match, Long> {
     Page<Match> findByChampionshipId(Long id, Pageable pageable);
 
-    @Query(value = "SELECT * FROM tb_match (NOLOCK) " +
+    @Query(value = "SELECT * FROM tb_match " +
             "WHERE championship_id = :championshipId AND type = :type AND status = :status", nativeQuery = true)
     List<Match> findMatchesByTypeAndStatusAndChampionshipId(Long championshipId, int type, int status);
 }

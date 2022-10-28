@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    @Query(value = "SELECT * FROM tb_group (NOLOCK) WHERE championship_id = :championshipId", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_group WHERE championship_id = :championshipId", nativeQuery = true)
     List<Group> findGroupsByChampionshipId(Long championshipId);
 }

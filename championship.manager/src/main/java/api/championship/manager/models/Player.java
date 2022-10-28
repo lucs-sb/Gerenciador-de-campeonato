@@ -1,5 +1,6 @@
 package api.championship.manager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;

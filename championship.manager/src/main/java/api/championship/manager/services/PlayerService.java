@@ -29,6 +29,8 @@ public class PlayerService {
             player.setName(newPlayer.getName());
             player.setTeam(team.get());
             playerRepository.save(player);
+
+            team.get().getPlayers().add(player);
         }catch (Exception ex){
             throw ex;
         }
