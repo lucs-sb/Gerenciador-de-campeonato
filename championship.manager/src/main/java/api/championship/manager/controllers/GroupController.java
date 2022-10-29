@@ -1,5 +1,6 @@
 package api.championship.manager.controllers;
 
+import api.championship.manager.dtos.GroupDTO;
 import api.championship.manager.models.Group;
 import api.championship.manager.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class GroupController {
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity updateGroup(@RequestBody Group group) throws Exception{
+    public ResponseEntity updateGroup(@RequestBody GroupDTO group) throws Exception{
         try {
             groupService.updateGroup(group);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -102,7 +102,11 @@ public class UserService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            repository.delete(user.get());
+            Optional<Login> login = loginRepository.findByUser(user.get().getId());
+            if (login.isEmpty())
+                throw new MessageNotFoundException("Usuário não encontrado");
+
+            loginRepository.delete(login.get());
         }catch (Exception e){
             throw e;
         }

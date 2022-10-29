@@ -1,5 +1,6 @@
 package api.championship.manager.controllers;
 
+import api.championship.manager.dtos.EventDTO;
 import api.championship.manager.models.Event;
 import api.championship.manager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class EventController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity addEvent(@RequestBody Event event) throws Exception{
+    public ResponseEntity addEvent(@RequestBody EventDTO event) throws Exception{
         try {
             eventService.addEvent(event);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -41,7 +42,7 @@ public class EventController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody Event event) throws Exception{
+    public ResponseEntity updateEvent(@PathVariable Long id, @RequestBody EventDTO event) throws Exception{
         try {
             eventService.updateEvent(id, event);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

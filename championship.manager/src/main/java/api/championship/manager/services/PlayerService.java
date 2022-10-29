@@ -1,5 +1,6 @@
 package api.championship.manager.services;
 
+import api.championship.manager.dtos.PlayerDTO;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Player;
 import api.championship.manager.models.Team;
@@ -19,7 +20,7 @@ public class PlayerService {
     private TeamRepository teamRepository;
 
     @Transactional
-    public void addPlayer(Player newPlayer){
+    public void addPlayer(PlayerDTO newPlayer){
         try {
             Optional<Team> team = teamRepository.findById(newPlayer.getTeam().getId());
             if (team.isEmpty())
@@ -37,7 +38,7 @@ public class PlayerService {
     }
 
     @Transactional
-    public void updatePlayer(Player newPlayer){
+    public void updatePlayer(PlayerDTO newPlayer){
         try {
             Optional<Team> team = teamRepository.findById(newPlayer.getTeam().getId());
             if (team.isEmpty())
@@ -47,7 +48,6 @@ public class PlayerService {
             if (player.isEmpty())
                 throw new MessageNotFoundException("Jogador não existe");
 
-            player = Optional.of(new Player());
             player.get().setName(newPlayer.getName());
             player.get().setTeam(team.get());
             playerRepository.save(player.get());
@@ -62,6 +62,8 @@ public class PlayerService {
             Optional<Player> player = playerRepository.findById(id);
             if (player.isEmpty())
                 throw new MessageNotFoundException("Jogador não existe");
+
+            player.get().getTeam().getPlayers().remove(player.get());
 
             playerRepository.delete(player.get());
         }catch (Exception ex){

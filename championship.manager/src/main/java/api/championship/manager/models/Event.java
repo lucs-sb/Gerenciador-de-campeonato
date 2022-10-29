@@ -1,11 +1,12 @@
 package api.championship.manager.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_event")
@@ -20,9 +21,10 @@ public class Event {
     @JoinColumn(name = "match_id", nullable = false)
     private Match match;
     @ManyToOne
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id")
     private Player player;
-    private LocalDateTime time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", locale = "pt-br")
+    private Date time;
     private String description;
     private String value;
 

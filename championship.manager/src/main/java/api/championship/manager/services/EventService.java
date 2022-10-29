@@ -1,5 +1,6 @@
 package api.championship.manager.services;
 
+import api.championship.manager.dtos.EventDTO;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Event;
 import api.championship.manager.models.Match;
@@ -37,15 +38,15 @@ public class EventService {
     }
 
     @Transactional
-    public void addEvent(Event newEvent) {
+    public void addEvent(EventDTO newEvent) {
         try {
-            Optional<Match> match = matchRepository.findById(newEvent.getId());
+            Optional<Match> match = matchRepository.findById(newEvent.getMatch().getId());
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
             Event event = new Event();
 
-            if (newEvent.getPlayer().getId() != null) {
+            if (newEvent.getPlayer() != null) {
                 Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
                 if (player.isEmpty())
                     throw new MessageNotFoundException("Jogador não encontrado");
@@ -69,17 +70,17 @@ public class EventService {
     }
 
     @Transactional
-    public void updateEvent(Long id, Event newEvent) {
+    public void updateEvent(Long id, EventDTO newEvent) {
         try {
             Optional<Event> event = eventRepository.findById(id);
             if (event.isEmpty())
                 throw new MessageNotFoundException("Evento não encontrado");
 
-            Optional<Match> match = matchRepository.findById(newEvent.getId());
+            Optional<Match> match = matchRepository.findById(newEvent.getMatch().getId());
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            if (newEvent.getPlayer().getId() != null) {
+            if (newEvent.getPlayer() != null) {
                 Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
                 if (player.isEmpty())
                     throw new MessageNotFoundException("Jogador não encontrado");
@@ -108,6 +109,8 @@ public class EventService {
             Optional<Event> event = eventRepository.findById(id);
             if (event.isEmpty())
                 throw new MessageNotFoundException("Evento não encontrado");
+
+            event.get().getMatch().getEvents().remove(event.get());
 
             eventRepository.delete(event.get());
         }catch (Exception e){

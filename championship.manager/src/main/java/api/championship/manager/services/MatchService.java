@@ -103,7 +103,6 @@ public class MatchService {
             if (away_team.isEmpty())
                 throw new MessageNotFoundException("Time não encontrado");
 
-            match = Optional.of(new Match());
             match.get().setHome_team(home_team.get());
             match.get().setAway_team(away_team.get());
             match.get().setDate(newMatch.getDate());
@@ -125,6 +124,8 @@ public class MatchService {
             Optional<Match> match = matchRepository.findById(id);
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
+
+            match.get().getChampionship().getMatches().remove(match.get());
 
             matchRepository.delete(match.get());
         }catch (Exception e){
@@ -230,7 +231,7 @@ public class MatchService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void createKnockoutMatches(Long championshipId, MatchType type){
         try {
             Optional<Championship> championship = championshipRepository.findById(championshipId);
