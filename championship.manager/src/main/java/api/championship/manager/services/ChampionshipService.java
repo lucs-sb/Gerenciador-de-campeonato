@@ -48,7 +48,11 @@ public class ChampionshipService {
 
             List<Team> teamList = new ArrayList<>();
             newChampionship.getTeams().forEach(t -> {
-                teamRepository.findById(t.getId()).ifPresent(teamList::add);
+                Optional<Team> team = teamRepository.findByIdAndUserId(t.getId(), user.get().getId());
+                if (team.isPresent())
+                    teamList.add(team.get());
+                else
+                    throw new MessageNotFoundException("Time não cadastrado. Id: "+t.getId());
             });
 
             Championship championship = new Championship();

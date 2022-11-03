@@ -1,5 +1,6 @@
 package api.championship.manager.services;
 
+import api.championship.manager.dtos.EventDTO;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Event;
 import api.championship.manager.models.Match;
@@ -8,6 +9,8 @@ import api.championship.manager.repositories.EventRepository;
 import api.championship.manager.repositories.MatchRepository;
 import api.championship.manager.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,28 +27,28 @@ public class EventService {
     private PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)
-    public List<Event> getEventsByMatch(Long id) {
+    public Page<Event> getEventsByMatch(Pageable pageable, Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            return eventRepository.findByMatchId(match.get().getId());
+            return eventRepository.findByMatchId(match.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }
     }
 
     @Transactional
-    public void addEvent(Event newEvent) {
+    public void addEvent(EventDTO newEvent) {
         try {
-            Optional<Match> match = matchRepository.findById(newEvent.getId());
+            Optional<Match> match = matchRepository.findById(newEvent.getMatch().getId());
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
             Event event = new Event();
 
-            if (newEvent.getPlayer().getId() != null) {
+            if (newEvent.getPlayer() != null) {
                 Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
                 if (player.isEmpty())
                     throw new MessageNotFoundException("Jogador não encontrado");
@@ -69,17 +72,17 @@ public class EventService {
     }
 
     @Transactional
-    public void updateEvent(Long id, Event newEvent) {
+    public void updateEvent(Long id, EventDTO newEvent) {
         try {
             Optional<Event> event = eventRepository.findById(id);
             if (event.isEmpty())
                 throw new MessageNotFoundException("Evento não encontrado");
 
-            Optional<Match> match = matchRepository.findById(newEvent.getId());
+            Optional<Match> match = matchRepository.findById(newEvent.getMatch().getId());
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            if (newEvent.getPlayer().getId() != null) {
+            if (newEvent.getPlayer() != null) {
                 Optional<Player> player = playerRepository.findById(newEvent.getPlayer().getId());
                 if (player.isEmpty())
                     throw new MessageNotFoundException("Jogador não encontrado");
@@ -109,9 +112,30 @@ public class EventService {
             if (event.isEmpty())
                 throw new MessageNotFoundException("Evento não encontrado");
 
+            event.get().getMatch().getEvents().remove(event.get());
+
             eventRepository.delete(event.get());
         }catch (Exception e){
             throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> getEventsBySearch(Long match_id, String search) {
+        try {
+            Optional<Match> match = matchRepository.findById(match_id);
+            if (match.isEmpty())
+                throw new MessageNotFoundException("Partida não cadastrada");
+
+            List<Event> eventsWithPlayers = eventRepository.findBySearchWithPlayers(match.get().getId(), search);
+            List<Event> events = eventRepository.findBySearch(match.get().getId(), search);
+
+            if (!eventsWithPlayers.isEmpty())
+                events.addAll(eventsWithPlayers);
+
+            return events;
+        }catch (Exception ex){
+            throw ex;
         }
     }
 }

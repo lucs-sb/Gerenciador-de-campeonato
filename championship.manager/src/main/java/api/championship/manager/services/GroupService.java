@@ -1,11 +1,15 @@
 package api.championship.manager.services;
 
+import api.championship.manager.dtos.GroupDTO;
 import api.championship.manager.enums.GroupName;
+import api.championship.manager.execeptionHandler.exceptions.MessageBadRequestException;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Championship;
 import api.championship.manager.models.Group;
 import api.championship.manager.models.Team;
+import api.championship.manager.repositories.ChampionshipRepository;
 import api.championship.manager.repositories.GroupRepository;
+import api.championship.manager.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +24,10 @@ public class GroupService {
     private MatchService matchService;
     @Autowired
     private GroupInformationService groupInformationService;
+    @Autowired
+    private ChampionshipRepository championshipRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Transactional(readOnly = true)
     public List<Group> getGroupsByChampionshipId(Long championshipId){
@@ -31,15 +39,29 @@ public class GroupService {
     }
 
     @Transactional
-    public void updateGroup(Group newGroup){
+    public void updateGroup(GroupDTO newGroup){
         try {
             Optional<Group> group = groupRepository.findById(newGroup.getId());
             if (group.isEmpty())
                 throw new MessageNotFoundException("Grupo não encontrado");
 
-            group = Optional.of(new Group());
-            group.get().setTeams(newGroup.getTeams());
+            Optional<Championship> championship = championshipRepository.findById(newGroup.getChampionship().getId());
+            if (championship.isEmpty())
+                throw new MessageBadRequestException("Campeonato não encontrado");
+
+            List<Team> teamList = new ArrayList<>();
+            newGroup.getTeams().forEach(t -> {
+                Optional<Team> team = teamRepository.findByIdAndUserId(t.getId(), championship.get().getUser().getId());
+                if (team.isPresent())
+                    teamList.add(team.get());
+                else
+                    throw new MessageNotFoundException("Time não cadastrado. Id: "+t.getId());
+            });
+
+            group.get().setTeams(teamList);
+            group.get().setGroup_information(groupInformationService.updateGroupInformationForGroup(newGroup.getGroup_information()));
             groupRepository.save(group.get());
+
         }catch (Exception ex){
             throw ex;
         }

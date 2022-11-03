@@ -1,6 +1,6 @@
 package api.championship.manager.controllers;
 
-import api.championship.manager.models.Player;
+import api.championship.manager.dtos.PlayerDTO;
 import api.championship.manager.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class PlayerController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity addPlayer(@RequestBody Player player) throws Exception{
+    public ResponseEntity addPlayer(@RequestBody PlayerDTO player) throws Exception{
         try {
             playerService.addPlayer(player);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -28,7 +28,7 @@ public class PlayerController {
 
     @PutMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity updatePlayer(@RequestBody Player player) throws Exception{
+    public ResponseEntity updatePlayer(@RequestBody PlayerDTO player) throws Exception{
         try {
             playerService.updatePlayer(player);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

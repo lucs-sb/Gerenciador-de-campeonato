@@ -54,4 +54,24 @@ public class GroupInformationService {
             throw ex;
         }
     }
+
+    @Transactional
+    public GroupInformation updateGroupInformationForGroup(GroupInformation newGroupInformation){
+        try {
+            Optional<GroupInformation> groupInformation = groupInformationRepository.findById(newGroupInformation.getId());
+            if (groupInformation.isEmpty())
+                throw new MessageNotFoundException("Grupo não encontrado");
+
+            groupInformation.get().setFirst_place(newGroupInformation.getFirst_place());
+            groupInformation.get().setSecond_place(newGroupInformation.getSecond_place());
+            groupInformation.get().setThird_place(newGroupInformation.getThird_place());
+            groupInformation.get().setFourth_place(newGroupInformation.getFourth_place());
+
+            groupInformationRepository.save(groupInformation.get());
+
+            return groupInformation.get();
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
 }

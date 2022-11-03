@@ -2,11 +2,12 @@ package api.championship.manager.models;
 
 import api.championship.manager.enums.MatchStatus;
 import api.championship.manager.enums.MatchType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,8 +27,10 @@ public class Match {
     @ManyToOne
     @JoinColumn(name = "home_team_id", nullable = false)
     private Team home_team;
-    private LocalDateTime date;
-    private LocalDateTime time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-br")
+    private Date date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", locale = "pt-br")
+    private Date time;
     private String place;
     private String scoreboard;
     private MatchStatus status;

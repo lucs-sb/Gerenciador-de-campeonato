@@ -55,9 +55,9 @@ public class MatchController {
 
     @PostMapping("/championship/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity createKnockoutMatches(@PathVariable Long id, @RequestParam MatchType type) throws Exception{
+    public ResponseEntity createKnockoutMatches(@PathVariable Long id, @RequestParam String type) throws Exception{
         try {
-            matchService.createKnockoutMatches(id, type);
+            matchService.createKnockoutMatches(id, MatchType.valueOf(type));
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (Exception e){
             throw new Exception(e);

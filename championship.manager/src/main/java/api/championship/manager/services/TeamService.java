@@ -5,6 +5,7 @@ import api.championship.manager.models.Championship;
 import api.championship.manager.models.Team;
 import api.championship.manager.models.User;
 import api.championship.manager.repositories.ChampionshipRepository;
+import api.championship.manager.repositories.PlayerRepository;
 import api.championship.manager.repositories.TeamRepository;
 import api.championship.manager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class TeamService {
     private UserRepository userRepository;
     @Autowired
     private ChampionshipRepository championshipRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)
     public Page<Team> getAllTeams(Long user_id, Pageable pageable){
@@ -114,6 +117,7 @@ public class TeamService {
             team.setShield_img(newTeam.getShield_img());
             team.setUser(user.get());
             repository.save(team);
+
         }catch (Exception e){
             throw e;
         }
@@ -130,6 +134,7 @@ public class TeamService {
             team.get().setAbbreviation(newTeam.getAbbreviation());
             team.get().setShield_img(newTeam.getShield_img());
             repository.save(team.get());
+
         }catch (Exception e){
             throw e;
         }
@@ -141,6 +146,8 @@ public class TeamService {
             Optional<Team> team = repository.findById(id);
             if (team.isEmpty())
                 throw new MessageNotFoundException("Time não encontrado");
+
+            team.get().getChampionships().forEach(c -> {c.getTeams().remove(team.get());});
 
             repository.delete(team.get());
         }catch (Exception e){
