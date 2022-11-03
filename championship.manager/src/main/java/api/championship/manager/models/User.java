@@ -22,6 +22,8 @@ public class User {
     private String email;
     @NotBlank
     private String name;
+    @Column(length = 1000)
+    private String url_photo;
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Team> teams;

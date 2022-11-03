@@ -15,7 +15,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     Page<Team> findByUserId(Long user_id, Pageable pageable);
 
     @Query(value = "SELECT * FROM tb_team WHERE user_id = :user_id AND " +
-            "(name like :search OR abbreviation like :search)", nativeQuery = true)
+            "(name like %:search% OR abbreviation like %:search%)", nativeQuery = true)
     List<Team> findByNameOrAbbreviation(Long user_id, String search);
 
     @Query(value = "SELECT t.* FROM tb_team AS t " +

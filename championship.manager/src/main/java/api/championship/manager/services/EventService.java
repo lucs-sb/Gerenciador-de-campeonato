@@ -9,6 +9,8 @@ import api.championship.manager.repositories.EventRepository;
 import api.championship.manager.repositories.MatchRepository;
 import api.championship.manager.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +27,13 @@ public class EventService {
     private PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)
-    public List<Event> getEventsByMatch(Long id) {
+    public Page<Event> getEventsByMatch(Pageable pageable, Long id) {
         try {
             Optional<Match> match = matchRepository.findById(id);
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            return eventRepository.findByMatchId(match.get().getId());
+            return eventRepository.findByMatchId(match.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }
@@ -115,6 +117,25 @@ public class EventService {
             eventRepository.delete(event.get());
         }catch (Exception e){
             throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> getEventsBySearch(Long match_id, String search) {
+        try {
+            Optional<Match> match = matchRepository.findById(match_id);
+            if (match.isEmpty())
+                throw new MessageNotFoundException("Partida não cadastrada");
+
+            List<Event> eventsWithPlayers = eventRepository.findBySearchWithPlayers(match.get().getId(), search);
+            List<Event> events = eventRepository.findBySearch(match.get().getId(), search);
+
+            if (!eventsWithPlayers.isEmpty())
+                events.addAll(eventsWithPlayers);
+
+            return events;
+        }catch (Exception ex){
+            throw ex;
         }
     }
 }

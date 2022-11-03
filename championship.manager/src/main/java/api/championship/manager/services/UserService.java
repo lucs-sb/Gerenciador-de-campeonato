@@ -44,6 +44,9 @@ public class UserService {
     @Transactional
     public void addUser(UserDTO newUser){
         try {
+            if (newUser.getUrl_photo().length() > 1000)
+                throw new MessageBadRequestException("url da foto muito grande");
+
             Optional<User> user = repository.findByEmail(newUser.getEmail());
             if (user.isPresent())
                 throw new MessageBadRequestException("Email já cadastrado");
@@ -51,6 +54,7 @@ public class UserService {
             user = Optional.of(new User());
             user.get().setName(newUser.getName());
             user.get().setEmail(newUser.getEmail());
+            user.get().setUrl_photo(newUser.getUrl_photo());
             repository.saveAndFlush(user.get());
 
             Login login = new Login();
