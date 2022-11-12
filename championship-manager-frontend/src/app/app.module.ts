@@ -12,6 +12,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { HttpOauthInterceptor } from './http-oauth.interceptor';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -57,7 +60,10 @@ const customNotifierOptions: NotifierOptions = {
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    HomeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

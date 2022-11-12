@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Match } from '../entities/match';
-import { Pagination } from '../entities/Pagination';
+import { Pagination } from '../entities/pagination';
 import { StorageService } from './storage.service';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pagination } from '../entities/Pagination';
+import { Pagination } from '../entities/pagination';
 import { StorageService } from './storage.service';
 
 @Injectable({
