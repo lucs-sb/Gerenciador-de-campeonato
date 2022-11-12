@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { StorageService } from './storage.service';
+import { StorageService } from './services/storage.service';
 
 @Injectable()
 export class HttpOauthInterceptor implements HttpInterceptor {
