@@ -35,15 +35,19 @@
         </div>
       </div>
 
-      <button type="submit"  (click)="register()" class="btn btn-outline-light btn-lg px-5 mt-3">
-        Criar conta
-      </button>
+      <div  class="div-btn">
+        <button type="submit"  (click)="register()" class="btn btn-lg px-5 mt-3">
+          Criar conta
+        </button>
+      </div>
 
       <p><span>ou</span></p>
 
-      <button type="submit"  (click)="redirect()" class="btn btn-outline-light btn-lg px-5 mt-3">
-        Fazer login
-      </button>
+      <div class="div-btn">
+        <button id="btn-create" type="submit" (click)="redirect()" class="btn btn-lg px-5 mt-3">
+          Fazer login
+        </button>
+      </div>
     </form>
   </div>
 </div>
