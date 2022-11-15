@@ -15,6 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.*;
 
 @Service
@@ -371,6 +375,25 @@ public class MatchService {
             matchRepository.save(match1);
         }catch (Exception ex){
             throw ex;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Match> getMatchesBySearch(Long championship_id, String search) {
+        try {
+            Optional<Championship> championship = championshipRepository.findById(championship_id);
+            if (championship.isEmpty())
+                throw new MessageNotFoundException("Partida não encontrada");
+
+            if (search.matches("[+-]?\\d*(\\.\\d+)?")){
+                int param = Integer.parseInt(search);
+                return matchRepository.findByTypeAndStatusSearch(championship.get().getId(), param);
+            }else
+                return matchRepository.findBySearch(championship.get().getId(), search);
+
+        }
+        catch (Exception e){
+            throw e;
         }
     }
 }

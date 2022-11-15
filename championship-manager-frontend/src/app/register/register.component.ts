@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../services/storage.service';
@@ -15,9 +15,9 @@ export class RegisterComponent implements OnInit {
   private notifier: NotifierService;
   
   formUser = this.formBuilder.group({
-    name: '',
-    email: '',
-    password: '',
+    name: ['', [Validators.required]],
+    email: ['', [Validators.email]],
+    password: ['', [Validators.required]],
     url_photo: ''
   });
 
@@ -51,4 +51,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  redirect(): void{
+    this.router.navigate(['/']);
+  }
 }
