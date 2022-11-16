@@ -125,6 +125,9 @@ public class ChampionshipService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
+            if ("DESC".equals(ordination) || "ASC".equals(ordination))
+                ordination = "1 " + ordination;
+
             if (search.isEmpty())
                 return repository.findWithOrdenation(user.get().getId(), ordination);
 
