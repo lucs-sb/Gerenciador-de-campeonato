@@ -17,11 +17,17 @@ public interface ChampionshipRepository extends JpaRepository<Championship, Long
 
     @Query(value = "SELECT * FROM tb_championship " +
             "WHERE user_id = :user_id AND " +
-            "(status = :search OR number_of_teams = :search)", nativeQuery = true)
-    List<Championship> findByparams(Long user_id, int search);
+            "(status = :search OR number_of_teams = :search) " +
+            "ORDER BY :ordination", nativeQuery = true)
+    List<Championship> findByparams(Long user_id, int search, String ordination);
 
     @Query(value = "SELECT * FROM tb_championship " +
             "WHERE user_id = :user_id AND " +
-            "(name like %:search% OR award like %:search% OR description like %:search%)", nativeQuery = true)
-    List<Championship> findByUserAndName(Long user_id, String search);
+            "(name like %:search% OR award like %:search% OR description like %:search%) " +
+            "ORDER BY :ordination", nativeQuery = true)
+    List<Championship> findByUserAndName(Long user_id, String search, String ordination);
+
+    @Query(value = "SELECT * FROM tb_championship WHERE user_id = :user_id" +
+            " ORDER BY :ordination", nativeQuery = true)
+    List<Championship> findWithOrdenation(Long user_id, String ordination);
 }

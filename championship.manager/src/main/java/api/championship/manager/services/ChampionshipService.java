@@ -119,18 +119,21 @@ public class ChampionshipService {
     }
 
     @Transactional(readOnly = true)
-    public List<Championship> getChampionshipsBySearch(Long user_id, String search) {
+    public List<Championship> getChampionshipsBySearch(Long user_id, String search, String ordination) {
         try {
             Optional<User> user = userRepository.findById(user_id);
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
+            if (search.isEmpty())
+                return repository.findWithOrdenation(user.get().getId(), ordination);
+
             if (search.matches("[+-]?\\d*(\\.\\d+)?")){
                 int param = Integer.parseInt(search);
-                return repository.findByparams(user.get().getId(), param);
+                return repository.findByparams(user.get().getId(), param, ordination);
             }
             else
-                return repository.findByUserAndName(user.get().getId(), search);
+                return repository.findByUserAndName(user.get().getId(), search, ordination);
         }catch (Exception e){
             throw e;
         }
