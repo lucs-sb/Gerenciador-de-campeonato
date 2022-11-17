@@ -55,13 +55,16 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public List<Team> getTeamsBySearch(Long user_id, String search){
+    public Page<Team> getTeamsBySearch(Long user_id, String search, Pageable pageable){
         try {
             Optional<User> user = userRepository.findById(user_id);
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            return repository.findByNameOrAbbreviation(user_id, search);
+            if (search.isEmpty())
+                return repository.findByUserId(user.get().getId(), pageable);
+
+            return repository.findByNameOrAbbreviation(user_id, search, pageable);
         }catch (Exception e){
             throw e;
         }

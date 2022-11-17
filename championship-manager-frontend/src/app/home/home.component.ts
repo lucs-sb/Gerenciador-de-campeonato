@@ -5,6 +5,8 @@ import { Championship } from '../entities/championship';
 import { ChampionshipService } from '../services/championship.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Team } from '../entities/team';
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,7 @@ export class HomeComponent implements OnInit {
   private notifier: NotifierService;
   championships: Championship[] = [];
   search: string = '';
-  ordination: string = 'DESC';
+  ordination: string = 'asc';
 
   formChampionship = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -26,11 +28,7 @@ export class HomeComponent implements OnInit {
     user: this.formBuilder.group({
       id: this.localStorage.get('user_id')
     }),
-    teams: new FormBuilder().array([
-      new FormGroup({
-        id: new FormControl()
-      })
-    ])
+    teams: new FormBuilder().array([])
   });
 
   data: any;
@@ -40,6 +38,9 @@ export class HomeComponent implements OnInit {
   count = 0;
   pageSize = 10;
   pageSizes = [10, 15, 20];
+  totalPages = [0];
+
+  teamsSelect: Team[] = [];
 
   /**
    * Constructor
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
     notifier: NotifierService, 
     private formBuilder: FormBuilder, 
     private localStorage: StorageService,
-    private router: Router) { this.notifier = notifier; }
+    private teamService: TeamService) { this.notifier = notifier; }
 
   ngOnInit(): void {
     this.retrieveChampionships();
@@ -59,7 +60,21 @@ export class HomeComponent implements OnInit {
   searchChampionships(){
     try {
       this.championships = [];
-      this.championshipService.getChampionshipsBySearch(this.search, this.ordination).subscribe((championships) => (this.championships = championships));
+
+      if("desc" == this.ordination || "asc" == this.ordination)
+      this.ordination = "id,"+this.ordination
+
+      this.championshipService.getChampionshipsBySearch(this.search, "size="+this.pageSize+"&page="+this.page+"&sort="+this.ordination).subscribe((res) => {
+        this.championships = res.content;
+        this.page = res.number;
+        this.count = res.totalElements;
+        this.pageSize = res.size;
+        this.ordination = "asc";
+
+        this.totalPages = [0];
+        for(var i = 1; i < res.totalPages; i++)
+          this.totalPages.push(i);
+      });
     }catch (ex: any) {
       this.notifier.notify('error', ex);
     }
@@ -73,7 +88,7 @@ export class HomeComponent implements OnInit {
       this.data = this.formChampionship.value;
       this.championshipService.addChampionship(this.data).subscribe(() => {
         this.notifier.notify('success', 'Campeonato criado com sucesso');
-        //this.router.navigate(['/home']);
+        this.retrieveChampionships();
       }, () => {
         this.notifier.notify('error', 'Não foi possível criar um novo campeonato no momento, tente novamente mais tarde');
       });
@@ -82,19 +97,21 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  handlePageChange(event: number): void {
-    this.page = event;
+  handlePageChange(event: any): void {
+    this.page = event.target.value;
     this.retrieveChampionships();
   }
 
   handlePageSizeChange(event: any): void {
     this.pageSize = event.target.value;
-    this.page = 1;
     this.retrieveChampionships();
   }
 
   retrieveChampionships(): void{
     try {
+      if("desc" == this.ordination || "asc" == this.ordination)
+      this.ordination = "id,"+this.ordination
+
       this.championshipService.getAllChampionships("?size="+this.pageSize+"&page="+this.page+"&sort="+this.ordination)
       .subscribe(
         res => {
@@ -102,12 +119,42 @@ export class HomeComponent implements OnInit {
           this.page = res.number;
           this.count = res.totalElements;
           this.pageSize = res.size;
+          this.ordination = "asc"
+          this.totalPages = [0];
+          
+          for(var i = 0; i < res.totalPages; i++)
+            this.totalPages[i] = i;
         },
         error => {
           console.log(error);
         });
     }catch (ex: any) {
       this.notifier.notify('error', ex);
+    }
+  }
+
+  getAllTeamsSelect(): void {
+    try {
+      this.teamsSelect = [];
+      
+      this.teamService.getAllTeams("?size=100"+"&page=0").subscribe((res) => {
+        this.teamsSelect = res.content;
+      });
+    }catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
+  }
+
+  handleTeamChange(event: any): void {
+    var team = event.target.value;
+    if(team){
+      this.teamService.getTeamById(team.split(" - ")[0]).subscribe((res) => {
+        this.formChampionship.value.teams?.push(res);
+        this.teamsSelect.filter(team => {
+          if(team.id == res.id)
+            team.hidden = true
+        });
+      });
     }
   }
 }

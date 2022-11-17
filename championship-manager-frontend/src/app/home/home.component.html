@@ -7,16 +7,16 @@
         <div id="div-search" class="input-group mb-3">
             <input [(ngModel)]="search" type="text" class="form-control" placeholder="Buscar por campeonatos" aria-describedby="basic-addon2">
             <select name="championships" id="championships" [(ngModel)]="ordination">
-                <option value="DESC">selecione para ordenar</option>
-                <option value="ASC">a-z</option>
-                <option value="DESC">z-a</option>
+                <option value="desc">selecione para ordenar</option>
+                <option value="asc">a-z</option>
+                <option value="desc">z-a</option>
                 <option value="number_of_teams">Nº times</option>
             </select>
             <div class="input-group-append">
                 <button (click)="searchChampionships()" class="btn btn-outline-secondary" type="button">Pesquisar</button>
             </div>
             <div id="btn-create">
-                <a routerLink="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">+Adiconar</a>
+                <a routerLink="#" class="btn btn-success" (click)="getAllTeamsSelect()" data-bs-toggle="modal" data-bs-target="#exampleModal">+Adiconar</a>
             </div>
         </div>
       </div>
@@ -51,9 +51,15 @@
       </div>
     </div>
     <div class="mt-3" style="text-align: center;">
-      Itens por página:
+      Itens por busca:
       <select (change)="handlePageSizeChange($event)">
         <option *ngFor="let size of pageSizes" [ngValue]="size">
+          {{ size }}
+        </option>
+      </select>
+      Próximo:
+      <select (change)="handlePageChange($event)">
+        <option *ngFor="let size of totalPages" [ngValue]="size">
           {{ size }}
         </option>
       </select>
@@ -97,6 +103,15 @@
                             Premiação é obrigatória
                         </div>
                     </div>
+                    
+                    <label for="">Selecione os participantes:</label>
+                    <div class="form-outline form-white mb-2">  
+                      <select (change)="handleTeamChange($event)" multiple>
+                        <option *ngFor="let team of teamsSelect" [ngValue]="team.id" [hidden]="team.hidden">
+                          {{ team.id }} - {{ team.name }}
+                        </option>
+                      </select>
+                  </div>
                 </form>
             </div>
             <div class="modal-footer">

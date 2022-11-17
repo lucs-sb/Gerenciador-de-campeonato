@@ -46,10 +46,10 @@ public class TeamController {
 
     @GetMapping(value = "/user/{user_id}/search")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Team>> getBySearch(@PathVariable Long user_id, @RequestParam("search") String search)
+    public ResponseEntity<Page<Team>> getBySearch(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "id") Pageable pageable, @PathVariable Long user_id, @RequestParam("search") String search)
             throws Exception {
         try {
-            List<Team> teams = service.getTeamsBySearch(user_id, search);
+            Page<Team> teams = service.getTeamsBySearch(user_id, search, pageable);
             return new ResponseEntity<>(teams, HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e);

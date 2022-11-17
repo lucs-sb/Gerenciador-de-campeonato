@@ -6,4 +6,5 @@ export interface Team{
     name: string;
     abbreviation: string;
     players: Player[];
+    hidden: boolean;
 }

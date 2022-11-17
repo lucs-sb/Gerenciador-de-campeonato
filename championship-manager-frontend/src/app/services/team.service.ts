@@ -31,9 +31,9 @@ export class TeamService {
     }
   }
 
-  getTeamsBySearch(search: string): Observable<Team[]> {
+  getTeamsBySearch(search: string, ordination: any): Observable<Pagination> {
     {
-      return this.http.get<Team[]>(this.API_URL+`/user/${this.storage.get('user_id')}/search?search=${search}`, this.HTTP_OPTIONS)
+      return this.http.get<Pagination>(this.API_URL+`/user/${this.storage.get('user_id')}/search?search=${search}&${ordination}`, this.HTTP_OPTIONS)
     }
   }
 

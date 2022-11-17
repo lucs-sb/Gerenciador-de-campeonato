@@ -31,9 +31,9 @@ export class ChampionshipService {
     }
   }
 
-  getChampionshipsBySearch(search: string, ordination: any): Observable<Championship[]> {
+  getChampionshipsBySearch(search: string, ordination: any): Observable<Pagination> {
     {
-      return this.http.get<Championship[]>(this.API_URL+`/user/${this.storage.get('user_id')}/search?search=${search}&ordination=${ordination}`, this.HTTP_OPTIONS)
+      return this.http.get<Pagination>(this.API_URL+`/user/${this.storage.get('user_id')}/search?search=${search}&${ordination}`, this.HTTP_OPTIONS)
     }
   }
 
