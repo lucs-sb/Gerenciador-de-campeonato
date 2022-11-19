@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
   login() {
     try {
       if(!this.formUser.value.email || !this.formUser.value.password)
-        throw new Error('Preencha todos os campos');
+        this.notifier.notify('error','Preencha todos os campos');
 
         this.loginService.login(this.formUser.value.email, this.formUser.value.password).subscribe((user) => {
         this.router.navigate(['/home']);

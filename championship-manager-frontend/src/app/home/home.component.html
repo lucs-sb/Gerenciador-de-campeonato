@@ -28,20 +28,19 @@
       <div *ngFor="let championship of championships | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index" class="col-4 m-2 card" style="width: 18rem;">
         <div class="card-body">
           <div>
-            <input type="hidden" [(ngModel)]="championship.name">
             <h4 class="card-title text-center">{{championship.name}}</h4>
           </div>
-          <div>
-            <input type="hidden" [(ngModel)]="championship.description">
-            <p class="card-title text-center">descrição: {{championship.description}}</p>
+          <div class="card-group">
+            <label>Descrição</label>
+            <p class="card-title text-center"  style="color: rgb(116, 116, 116);">{{championship.description}}</p>
           </div>
-          <div>
-            <input type="hidden" [(ngModel)]="championship.award">
-            <p class="card-title text-center">premiação: {{championship.award}}</p>
+          <div class="card-group">
+            <label>Premiação</label>
+            <p class="card-title text-center"  style="color: rgb(116, 116, 116);">{{championship.award}}</p>
           </div>
-          <div>
-            <input type="hidden" [(ngModel)]="championship.status">
-            <p class="card-title text-center">status: {{championship.status}}</p>
+          <div class="card-group">
+            <label>Status</label>
+            <p class="card-title text-center"  style="color: rgb(116, 116, 116);">{{championship.status}}</p>
           </div>
           <div class="d-flex justify-content-around mt-3">
             <a routerLink="/championship/{{championship.id}}"
@@ -77,6 +76,7 @@
                 <form [formGroup]="formChampionship" id="form">
                     
                     <div class="form-outline form-white mb-2">
+                        <label>Nome</label>
                         <input class="input" id="name" type="text" formControlName="name" placeholder="Nome">
                         <div *ngIf="formChampionship.get('name')?.errors?.['required'] && formChampionship.get('name')?.touched" style="color: red;">
                             Nome obrigatório
@@ -84,6 +84,7 @@
                     </div>
             
                     <div class="form-outline form-white mb-2">
+                        <label>Descrição</label>
                         <input class="input" id="description" type="text" formControlName="description" placeholder="Descrição">
                         <div *ngIf="formChampionship.get('description')?.errors?.['required'] && formChampionship.get('description')?.touched" style="color: red;">
                             Descrição é obrigatória
@@ -91,13 +92,15 @@
                     </div>
                     
                     <div class="form-outline form-white mb-2">
-                        <input class="input" id="number_of_teams" type="text" formControlName="number_of_teams" placeholder="Número de times">
+                        <label>Número de times</label>
+                        <input class="input" id="number_of_teams" type="text" formControlName="number_of_teams" placeholder="16">
                         <div *ngIf="formChampionship.get('number_of_teams')?.errors?.['required'] && formChampionship.get('number_of_teams')?.touched" style="color: red;">
                             Número de times é obrigatório
                         </div>
                     </div>
                     
                     <div class="form-outline form-white mb-2">  
+                        <label>Premiação</label>
                         <input class="input" id="award" type="text" formControlName="award" placeholder="Premiação" required>
                         <div *ngIf="formChampionship.get('award')?.errors?.['required'] && formChampionship.get('award')?.touched" style="color: red;">
                             Premiação é obrigatória

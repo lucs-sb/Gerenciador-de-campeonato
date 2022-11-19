@@ -91,6 +91,9 @@ public class UserService {
             if (!updateUser.getPassword().isEmpty())
                 login.get().setPassword(updateUser.getPassword());
 
+            if (!updateUser.getUrl_photo().isEmpty())
+                user.get().setUrl_photo(updateUser.getUrl_photo());
+
             repository.save(user.get());
             loginRepository.save(login.get());
 

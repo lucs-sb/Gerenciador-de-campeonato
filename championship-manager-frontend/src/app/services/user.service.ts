@@ -54,11 +54,11 @@ export class UserService {
     return this.http.post<any>(this.API_URL, user); 
   }
 
-  updateUser(user: any, id: number) {
+  updateUser(user: any, id: any) {
     return this.http.put<any>(this.API_URL+`/${id}`, user, this.HTTP_OPTIONS); 
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: any) {
     return this.http.delete<any>(this.API_URL+`/${id}`, this.HTTP_OPTIONS); 
   }
 }

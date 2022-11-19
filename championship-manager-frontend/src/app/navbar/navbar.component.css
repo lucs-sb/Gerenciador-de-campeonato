@@ -1,6 +1,7 @@
 #img{
     height: 80px;
     width: 80px;
+    border-radius: 40px;
 }
 
 #offcanvasDarkNavbarLabel{

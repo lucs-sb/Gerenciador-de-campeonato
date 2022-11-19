@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Pagination } from '../entities/pagination';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -15,6 +17,12 @@ export class PlayerService {
   };
 
   constructor(private http: HttpClient, private storage: StorageService) { }
+
+  getAllPlayersByTeam(team_id: number, pagination: string): Observable<Pagination> {
+    {
+      return this.http.get<Pagination>(this.API_URL+`/team/${team_id}`+pagination, this.HTTP_OPTIONS)
+    }
+  }
 
   addPlayer(player: any) {
     return this.http.post<any>(this.API_URL, player, this.HTTP_OPTIONS); 

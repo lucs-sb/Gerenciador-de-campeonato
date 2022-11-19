@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
   register(): void{
     try {
       if(!this.formUser.value.name || !this.formUser.value.email || !this.formUser.value.password)
-        throw new Error('Preencha todos os campos obrigatórios');
+        this.notifier.notify('error','Preencha todos os campos obrigatórios');
 
       this.data = this.formUser.value;
       this.registerService.addUser(this.data).subscribe(() => {

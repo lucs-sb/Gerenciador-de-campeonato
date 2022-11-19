@@ -74,6 +74,8 @@ export class HomeComponent implements OnInit {
         this.totalPages = [0];
         for(var i = 1; i < res.totalPages; i++)
           this.totalPages.push(i);
+      }, () => {
+        this.notifier.notify('error', 'Não foi possível carregar os campeonatos no momento, tente novamente mais tarde');
       });
     }catch (ex: any) {
       this.notifier.notify('error', ex);
@@ -83,11 +85,21 @@ export class HomeComponent implements OnInit {
   addChampionship(): void{
     try {
       if(!this.formChampionship.value.name || !this.formChampionship.value.description || !this.formChampionship.value.number_of_teams || !this.formChampionship.value.award || !this.formChampionship.value.teams)
-        throw new Error('Preencha todos os campos');
+        this.notifier.notify('error','Preencha todos os campos');
 
       this.data = this.formChampionship.value;
       this.championshipService.addChampionship(this.data).subscribe(() => {
         this.notifier.notify('success', 'Campeonato criado com sucesso');
+        this.formChampionship = this.formBuilder.group({
+          name: ['', [Validators.required]],
+          description: ['', [Validators.required]],
+          number_of_teams: [0, [Validators.required]],
+          award: ['', [Validators.required]],
+          user: this.formBuilder.group({
+            id: this.localStorage.get('user_id')
+          }),
+          teams: new FormBuilder().array([])
+        });
         this.retrieveChampionships();
       }, () => {
         this.notifier.notify('error', 'Não foi possível criar um novo campeonato no momento, tente novamente mais tarde');
@@ -124,9 +136,8 @@ export class HomeComponent implements OnInit {
           
           for(var i = 0; i < res.totalPages; i++)
             this.totalPages[i] = i;
-        },
-        error => {
-          console.log(error);
+        }, () => {
+          this.notifier.notify('error', 'Não foi possível carregar os campeonatos no momento, tente novamente mais tarde');
         });
     }catch (ex: any) {
       this.notifier.notify('error', ex);
@@ -139,6 +150,8 @@ export class HomeComponent implements OnInit {
       
       this.teamService.getAllTeams("?size=100"+"&page=0").subscribe((res) => {
         this.teamsSelect = res.content;
+      }, () => {
+        this.notifier.notify('error', 'Não foi possível carregar os times no momento, tente novamente mais tarde');
       });
     }catch (ex: any) {
       this.notifier.notify('error', ex);

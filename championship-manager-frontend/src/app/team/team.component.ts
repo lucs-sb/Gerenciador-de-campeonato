@@ -20,7 +20,7 @@ export class TeamComponent implements OnInit {
   formTeam = this.formBuilder.group({
     name: ['', [Validators.required]],
     abbreviation: ['', [Validators.required]],
-    shield_img: [0, [Validators.required]]
+    shield_img: ['', [Validators.required]]
   });
 
   data: any;
@@ -71,11 +71,16 @@ export class TeamComponent implements OnInit {
   addTeam(): void{
     try {
       if(!this.formTeam.value.name || !this.formTeam.value.abbreviation || !this.formTeam.value.shield_img)
-        throw new Error('Preencha todos os campos');
+        this.notifier.notify('error','Preencha todos os campos');
 
       this.data = this.formTeam.value;
       this.teamService.addTeam(this.data).subscribe(() => {
         this.notifier.notify('success', 'Time criado com sucesso');
+        this.formTeam = this.formBuilder.group({
+          name: ['', [Validators.required]],
+          abbreviation: ['', [Validators.required]],
+          shield_img: ['', [Validators.required]]
+        });
         this.retrieveTeams();
       }, () => {
         this.notifier.notify('error', 'Não foi possível criar um novo time no momento, tente novamente mais tarde');

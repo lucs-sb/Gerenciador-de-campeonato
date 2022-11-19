@@ -28,7 +28,7 @@
       <div *ngFor="let team of teams | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index" class="col-4 m-2 card" style="width: 18rem;">
         <div class="card-body">
             <div>
-                <img class="card-img-top" src="{{team.shield_img}}" alt="Card image cap">
+                <img id="img" class="card-img-top" src="{{team.shield_img}}" alt="Card image cap" [hidden]="!team.shield_img">
             </div>
           <div>
             <input type="hidden" [(ngModel)]="team.name">
@@ -68,6 +68,7 @@
                 <form [formGroup]="formTeam" id="form">
                     
                     <div class="form-outline form-white mb-2">
+                      <label>Nome</label>
                         <input class="input" id="name" type="text" formControlName="name" placeholder="Nome">
                         <div *ngIf="formTeam.get('name')?.errors?.['required'] && formTeam.get('name')?.touched" style="color: red;">
                             Nome obrigatório
@@ -75,6 +76,7 @@
                     </div>
             
                     <div class="form-outline form-white mb-2">
+                      <label>Abreviação do nome do time</label>
                         <input class="input" id="abbreviation" type="text" formControlName="abbreviation" placeholder="Abreviação">
                         <div *ngIf="formTeam.get('abbreviation')?.errors?.['required'] && formTeam.get('abbreviation')?.touched" style="color: red;">
                             Abreviação é obrigatória
@@ -82,7 +84,8 @@
                     </div>
                     
                     <div class="form-outline form-white mb-2">
-                        <input class="input" id="shield_img" type="text" formControlName="shield_img" placeholder="URL da imagem do time">
+                        <label>Escudo</label>
+                        <input class="input" id="shield_img" type="text" formControlName="shield_img" placeholder="URL da imagem">
                         <div *ngIf="formTeam.get('shield_img')?.errors?.['required'] && formTeam.get('shield_img')?.touched" style="color: red;">
                             Imagem do time é obrigatório
                         </div>
