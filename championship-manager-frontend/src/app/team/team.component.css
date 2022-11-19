@@ -2,6 +2,10 @@
     padding-top: 20px;
 }
 
+.card-body{
+    text-align: center;
+}
+
 #img{
     height: 80px;
     width: 80px;

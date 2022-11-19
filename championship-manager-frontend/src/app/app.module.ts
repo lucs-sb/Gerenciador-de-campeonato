@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { TeamComponent } from './team/team.component';
 import { UserComponent } from './user/user.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -67,7 +68,8 @@ const customNotifierOptions: NotifierOptions = {
     HomeComponent,
     NavbarComponent,
     TeamComponent,
-    UserComponent
+    UserComponent,
+    TeamDetailComponent
   ],
   imports: [
     BrowserModule,

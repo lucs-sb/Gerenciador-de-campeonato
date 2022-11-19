@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
   formChampionship = this.formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    number_of_teams: [0, [Validators.required]],
     award: ['', [Validators.required]],
     user: this.formBuilder.group({
       id: this.localStorage.get('user_id')
@@ -84,26 +83,30 @@ export class HomeComponent implements OnInit {
 
   addChampionship(): void{
     try {
-      if(!this.formChampionship.value.name || !this.formChampionship.value.description || !this.formChampionship.value.number_of_teams || !this.formChampionship.value.award || !this.formChampionship.value.teams)
+      if(!this.formChampionship.value.name || !this.formChampionship.value.description || !this.formChampionship.value.award || !this.formChampionship.value.teams)
         this.notifier.notify('error','Preencha todos os campos');
 
-      this.data = this.formChampionship.value;
-      this.championshipService.addChampionship(this.data).subscribe(() => {
-        this.notifier.notify('success', 'Campeonato criado com sucesso');
-        this.formChampionship = this.formBuilder.group({
-          name: ['', [Validators.required]],
-          description: ['', [Validators.required]],
-          number_of_teams: [0, [Validators.required]],
-          award: ['', [Validators.required]],
-          user: this.formBuilder.group({
-            id: this.localStorage.get('user_id')
-          }),
-          teams: new FormBuilder().array([])
+      else if(this.formChampionship.value.teams?.length! < 16)
+        this.notifier.notify('error','Para inicar um novo campeonato é preciso selecionar 16 times');
+
+      else{
+        this.data = this.formChampionship.value;
+        this.championshipService.addChampionship(this.data).subscribe(() => {
+          this.notifier.notify('success', 'Campeonato criado com sucesso');
+          this.formChampionship = this.formBuilder.group({
+            name: ['', [Validators.required]],
+            description: ['', [Validators.required]],
+            award: ['', [Validators.required]],
+            user: this.formBuilder.group({
+              id: this.localStorage.get('user_id')
+            }),
+            teams: new FormBuilder().array([])
+          });
+          this.retrieveChampionships();
+        }, () => {
+          this.notifier.notify('error', 'Não foi possível criar um novo campeonato no momento, tente novamente mais tarde');
         });
-        this.retrieveChampionships();
-      }, () => {
-        this.notifier.notify('error', 'Não foi possível criar um novo campeonato no momento, tente novamente mais tarde');
-      });
+      }
     }catch (ex: any) {
       this.notifier.notify('error', ex);
     }

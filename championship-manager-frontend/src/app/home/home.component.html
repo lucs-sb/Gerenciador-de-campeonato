@@ -6,17 +6,18 @@
       <div class="col-10">
         <div id="div-search" class="input-group mb-3">
             <input [(ngModel)]="search" type="text" class="form-control" placeholder="Buscar por campeonatos" aria-describedby="basic-addon2">
-            <select name="championships" id="championships" [(ngModel)]="ordination">
-                <option value="desc">selecione para ordenar</option>
-                <option value="asc">a-z</option>
-                <option value="desc">z-a</option>
-                <option value="number_of_teams">Nº times</option>
+            <select name="championships" id="championships" [(ngModel)]="ordination" style="margin: 3px">
+                <option value="asc">tipo de ordenação</option>
+                <option value="asc">+antigos</option>
+                <option value="desc">+recentes</option>
+                <option value="name">nome</option>
+                <option value="status">status</option>
             </select>
-            <div class="input-group-append">
+            <div class="input-group-append" style="margin: 3px">
                 <button (click)="searchChampionships()" class="btn btn-outline-secondary" type="button">Pesquisar</button>
             </div>
-            <div id="btn-create">
-                <a routerLink="#" class="btn btn-success" (click)="getAllTeamsSelect()" data-bs-toggle="modal" data-bs-target="#exampleModal">+Adiconar</a>
+            <div class="input-group-append" style="margin: 3px">
+                <a routerLink="#" class="btn btn-outline-success" (click)="getAllTeamsSelect()" data-bs-toggle="modal" data-bs-target="#exampleModal">+Adiconar</a>
             </div>
         </div>
       </div>
@@ -25,18 +26,10 @@
 
 <div class="p-5 pt-0">
     <div class="row">
-      <div *ngFor="let championship of championships | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index" class="col-4 m-2 card" style="width: 18rem;">
+      <div *ngFor="let championship of championships | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index" class="col-4 m-2 card" style="width: 30%;">
         <div class="card-body">
           <div>
             <h4 class="card-title text-center">{{championship.name}}</h4>
-          </div>
-          <div class="card-group">
-            <label>Descrição</label>
-            <p class="card-title text-center"  style="color: rgb(116, 116, 116);">{{championship.description}}</p>
-          </div>
-          <div class="card-group">
-            <label>Premiação</label>
-            <p class="card-title text-center"  style="color: rgb(116, 116, 116);">{{championship.award}}</p>
           </div>
           <div class="card-group">
             <label>Status</label>
@@ -44,7 +37,7 @@
           </div>
           <div class="d-flex justify-content-around mt-3">
             <a routerLink="/championship/{{championship.id}}"
-              class="btn btn-info">Mais informações</a>
+              class="btn btn-outline-info" style="color: rgb(94, 94, 94);">Mais informações</a>
           </div>
         </div>
       </div>
@@ -88,14 +81,6 @@
                         <input class="input" id="description" type="text" formControlName="description" placeholder="Descrição">
                         <div *ngIf="formChampionship.get('description')?.errors?.['required'] && formChampionship.get('description')?.touched" style="color: red;">
                             Descrição é obrigatória
-                        </div>
-                    </div>
-                    
-                    <div class="form-outline form-white mb-2">
-                        <label>Número de times</label>
-                        <input class="input" id="number_of_teams" type="text" formControlName="number_of_teams" placeholder="16">
-                        <div *ngIf="formChampionship.get('number_of_teams')?.errors?.['required'] && formChampionship.get('number_of_teams')?.touched" style="color: red;">
-                            Número de times é obrigatório
                         </div>
                     </div>
                     

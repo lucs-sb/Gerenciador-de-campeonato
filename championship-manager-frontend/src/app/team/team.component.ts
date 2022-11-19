@@ -19,8 +19,8 @@ export class TeamComponent implements OnInit {
 
   formTeam = this.formBuilder.group({
     name: ['', [Validators.required]],
-    abbreviation: ['', [Validators.required]],
-    shield_img: ['', [Validators.required]]
+    abbreviation: [''],
+    shield_img: ['']
   });
 
   data: any;
@@ -70,21 +70,22 @@ export class TeamComponent implements OnInit {
 
   addTeam(): void{
     try {
-      if(!this.formTeam.value.name || !this.formTeam.value.abbreviation || !this.formTeam.value.shield_img)
-        this.notifier.notify('error','Preencha todos os campos');
-
-      this.data = this.formTeam.value;
-      this.teamService.addTeam(this.data).subscribe(() => {
-        this.notifier.notify('success', 'Time criado com sucesso');
-        this.formTeam = this.formBuilder.group({
-          name: ['', [Validators.required]],
-          abbreviation: ['', [Validators.required]],
-          shield_img: ['', [Validators.required]]
+      if(!this.formTeam.value.name)
+        this.notifier.notify('error','Preencha os campos obrigatórios');
+      else{
+        this.data = this.formTeam.value;
+        this.teamService.addTeam(this.data).subscribe(() => {
+          this.notifier.notify('success', 'Time criado com sucesso');
+          this.formTeam = this.formBuilder.group({
+            name: ['', [Validators.required]],
+            abbreviation: [''],
+            shield_img: ['']
+          });
+          this.retrieveTeams();
+        }, () => {
+          this.notifier.notify('error', 'Não foi possível criar um novo time no momento, tente novamente mais tarde');
         });
-        this.retrieveTeams();
-      }, () => {
-        this.notifier.notify('error', 'Não foi possível criar um novo time no momento, tente novamente mais tarde');
-      });
+      }
     }catch (ex: any) {
       this.notifier.notify('error', ex);
     }
