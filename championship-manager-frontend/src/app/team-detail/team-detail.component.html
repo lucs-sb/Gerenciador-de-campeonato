@@ -43,7 +43,7 @@
                         <div class="page">
                             <label>Nome</label>
                             <p style="color: rgb(116, 116, 116);">{{player.name}}</p>
-                            <a routerLink="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalPlayer">Editar</a>
+                            <a routerLink="#" class="btn btn-warning" data-bs-toggle="modal" (click)="setPlayerId(player.id)" data-bs-target="#modalPlayer">Editar</a>
                             <button type="button" class="btn btn-danger delete" title="delete player" (click)="deletePlayer(player)">x</button>
                         </div>
                     </div>

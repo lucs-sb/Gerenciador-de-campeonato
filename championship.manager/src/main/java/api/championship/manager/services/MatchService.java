@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -37,7 +38,7 @@ public class MatchService {
     @Transactional(readOnly = true)
     public Page<Match> getMatches(Long id, Pageable pageable) {
         try {
-            Page<Match> matches = matchRepository.findByChampionshipId(id, pageable);
+            Page<Match> matches = matchRepository.findByChampionshipIdAndDeletionDateIsNull(id, pageable);
             if (matches.isEmpty())
                 throw new MessageNotFoundException("Torneio sem partidas cadastradas");
 
@@ -129,9 +130,9 @@ public class MatchService {
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            match.get().getChampionship().getMatches().remove(match.get());
+            match.get().setDeletionDate(LocalDateTime.now());
 
-            matchRepository.delete(match.get());
+            matchRepository.save(match.get());
         }catch (Exception e){
             throw e;
         }

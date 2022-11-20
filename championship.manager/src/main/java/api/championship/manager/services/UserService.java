@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -113,7 +114,11 @@ public class UserService {
             if (login.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            loginRepository.delete(login.get());
+            user.get().setDeletionDate(LocalDateTime.now());
+            login.get().setDeletionDate(LocalDateTime.now());
+
+            repository.save(user.get());
+            loginRepository.save(login.get());
         }catch (Exception e){
             throw e;
         }

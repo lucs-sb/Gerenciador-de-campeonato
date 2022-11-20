@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,7 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "player_id")
     )
     private List<Player> players;
+    private LocalDateTime deletionDate;
 
     public Team(){}
 }

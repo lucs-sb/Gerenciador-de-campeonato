@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -53,7 +54,7 @@ public class PlayerService {
                 throw new MessageNotFoundException("Jogador não existe");
 
             player.get().setName(newPlayer.getName());
-            player.get().setTeam(team.get());
+
             playerRepository.save(player.get());
         }catch (Exception ex){
             throw ex;
@@ -67,9 +68,9 @@ public class PlayerService {
             if (player.isEmpty())
                 throw new MessageNotFoundException("Jogador não existe");
 
-            player.get().getTeam().getPlayers().remove(player.get());
+            player.get().setDeletionDate(LocalDateTime.now());
 
-            playerRepository.delete(player.get());
+            playerRepository.save(player.get());
         }catch (Exception ex){
             throw ex;
         }
@@ -82,7 +83,7 @@ public class PlayerService {
             if (team.isEmpty())
                 throw new MessageNotFoundException("Time não encontrado");
 
-            return playerRepository.findByTeamId(team.get().getId(), pageable);
+            return playerRepository.findByTeamIdAndDeletionDateIsNull(team.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }

@@ -1,5 +1,6 @@
 package api.championship.manager.services;
 
+import api.championship.manager.enums.ChampionshipStatus;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
 import api.championship.manager.models.Championship;
 import api.championship.manager.models.Team;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -33,7 +35,7 @@ public class ChampionshipService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            return repository.findByUserId(user.get().getId(), pageable);
+            return repository.findByUserIdAndDeletionDateIsNull(user.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }
@@ -60,8 +62,7 @@ public class ChampionshipService {
             championship.setName(newChampionship.getName());
             championship.setDescription(newChampionship.getDescription());
             championship.setAward(newChampionship.getAward());
-            championship.setNumber_of_teams(newChampionship.getNumber_of_teams());
-            championship.setStatus(newChampionship.getStatus());
+            championship.setStatus(ChampionshipStatus.IN_PROGRESS);
             championship.setTeams(teamList);
             repository.saveAndFlush(championship);
 
@@ -95,7 +96,6 @@ public class ChampionshipService {
             championship.get().setName(newChampionship.getName());
             championship.get().setDescription(newChampionship.getDescription());
             championship.get().setAward(newChampionship.getAward());
-            championship.get().setNumber_of_teams(newChampionship.getNumber_of_teams());
             championship.get().setStatus(newChampionship.getStatus());
             repository.save(championship.get());
 
@@ -111,7 +111,9 @@ public class ChampionshipService {
             if (championship.isEmpty())
                 throw new MessageNotFoundException("Campeonato não encontrado");
 
-            repository.delete(championship.get());
+            championship.get().setDeletionDate(LocalDateTime.now());
+
+            repository.save(championship.get());
 
         }catch (Exception e){
             throw e;
@@ -126,7 +128,7 @@ public class ChampionshipService {
                 throw new MessageNotFoundException("Usuário não encontrado");
 
             if (search.isEmpty())
-                return repository.findByUserId(user.get().getId(), pageable);
+                return repository.findByUserIdAndDeletionDateIsNull(user.get().getId(), pageable);
 
             if (search.matches("[+-]?\\d*(\\.\\d+)?")){
                 int param = Integer.parseInt(search);

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class Match {
     private MatchType type;
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
     private List<Event> events;
+    private LocalDateTime deletionDate;
 
     public Match(){}
 }

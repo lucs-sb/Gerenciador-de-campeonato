@@ -28,6 +28,7 @@ export class TeamDetailComponent implements OnInit {
   });
 
   formPlayer = this.formBuilder.group({
+    id: 0,
     name: '',
     team: this.formBuilder.group({
       id: this.route.snapshot.paramMap.get('id')!
@@ -42,6 +43,7 @@ export class TeamDetailComponent implements OnInit {
   pageSize = 10;
   pageSizes = [15, 20, 25];
   totalPages = [0];
+  player_id: number = 0;
 
   /**
    * Constructor
@@ -105,16 +107,19 @@ export class TeamDetailComponent implements OnInit {
   updatePlayer(): void{
     try {
       if(this.formPlayer.value.name){
+        this.formPlayer.value.id = this.player_id;
         this.data = this.formPlayer.value;
 
         this.playerService.updatePlayer(this.data).subscribe(() => {
           this.notifier.notify('success', 'Jogador editado com sucesso');
           this.formPlayer = this.formBuilder.group({
+            id: 0,
             name: '',
             team: this.formBuilder.group({
               id: this.route.snapshot.paramMap.get('id')!
             })
           });
+          this.player_id = 0;
           this.getPlayersByTeam();
         }, () => {
           this.notifier.notify('error', 'Não foi possível editar o jogador no momento, tente novamente mais tarde');
@@ -129,6 +134,13 @@ export class TeamDetailComponent implements OnInit {
   updateTeam(): void{
     try {
       if(this.formTeam.value.name || this.formTeam.value.abbreviation || this.formTeam.value.shield_img){
+        if(!this.formTeam.value.name)
+          this.formTeam.value.name = this.team?.name;
+        if(!this.formTeam.value.abbreviation)
+          this.formTeam.value.abbreviation = this.team?.abbreviation;
+        if(!this.formTeam.value.shield_img)
+          this.formTeam.value.shield_img = this.team?.shield_img;
+
         this.data = this.formTeam.value;
 
         const team_id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
@@ -195,6 +207,7 @@ export class TeamDetailComponent implements OnInit {
         this.playerService.addPlayer(this.data).subscribe(() => {
           this.notifier.notify('success', 'Jogador criado com sucesso');
           this.formPlayer = this.formBuilder.group({
+            id: 0,
             name: '',
             team: this.formBuilder.group({
               id: this.route.snapshot.paramMap.get('id')!
@@ -209,5 +222,9 @@ export class TeamDetailComponent implements OnInit {
     } catch (ex: any) {
       this.notifier.notify('error', ex);
     }
+  }
+
+  setPlayerId(id: number): void{
+    this.player_id = id;
   }
 }

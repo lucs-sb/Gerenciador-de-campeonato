@@ -56,35 +56,12 @@ public class TeamController {
         }
     }
 
-    @GetMapping(value = "/user/{user_id}/championship/{championship_id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Team>> getAllTeamsThatAreNotInTheChampionship(@PathVariable Long user_id, @PathVariable Long championship_id)
-            throws Exception {
-        try {
-            List<Team> teams = service.getAllTeamsThatAreNotInTheChampionship(user_id, championship_id);
-            return new ResponseEntity<>(teams, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
-
     @PostMapping("/user/{user_id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity add(@RequestBody Team team, @PathVariable Long user_id) throws Exception{
         try {
             service.addTeam(user_id, team);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (Exception e){
-            throw new Exception(e);
-        }
-    }
-
-    @PostMapping("/championship/{championship_id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity addTeamInChampionship(@RequestParam List<Long> teams_id, @PathVariable Long championship_id) throws Exception{
-        try {
-            service.addTeamInChampionship(championship_id, teams_id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (Exception e){
             throw new Exception(e);
         }
