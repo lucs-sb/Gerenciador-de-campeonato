@@ -3,7 +3,7 @@ import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../services/storage.service';
 import { Championship } from '../entities/championship';
 import { ChampionshipService } from '../services/championship.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Team } from '../entities/team';
 import { TeamService } from '../services/team.service';
@@ -73,6 +73,13 @@ export class HomeComponent implements OnInit {
         this.totalPages = [0];
         for(var i = 1; i < res.totalPages; i++)
           this.totalPages.push(i);
+
+        for(var j = 0; j < this.championships.length; j++){
+          if(this.championships[j].status == 'IN_PROGRESS')
+            this.championships[j].status = 'Em andamento'
+          else if(this.championships[j].status == 'CLOSED')
+            this.championships[j].status = 'Finalizado'
+        }
       }, () => {
         this.notifier.notify('error', 'Não foi possível carregar os campeonatos no momento, tente novamente mais tarde');
       });
@@ -139,6 +146,13 @@ export class HomeComponent implements OnInit {
           
           for(var i = 0; i < res.totalPages; i++)
             this.totalPages[i] = i;
+
+            for(var j = 0; j < this.championships.length; j++){
+              if(this.championships[j].status == 'IN_PROGRESS')
+                this.championships[j].status = 'Em andamento'
+              else if(this.championships[j].status == 'CLOSED')
+                this.championships[j].status = 'Finalizado'
+            }
         }, () => {
           this.notifier.notify('error', 'Não foi possível carregar os campeonatos no momento, tente novamente mais tarde');
         });
