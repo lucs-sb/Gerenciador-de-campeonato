@@ -1,0 +1,119 @@
+<notifier-container></notifier-container>
+<app-navbar></app-navbar>
+<app-navbar-championship></app-navbar-championship>
+
+<div class="container" *ngFor="let group of groups">
+    <div class="card">
+        <div class="card-top">
+            <h2>Group {{group.name_group}}</h2>
+        </div>
+        <div class="card-group">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Pontos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"> <img id="img" src="{{group.group_information.first_place.shield_img}}" [hidden]="!group.group_information.first_place.shield_img"> {{group.group_information.first_place.name}}</th>
+                    <td>{{group.group_information.first_place_points}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"> <img id="img" src="{{group.group_information.second_place.shield_img}}" [hidden]="!group.group_information.second_place.shield_img"> {{group.group_information.second_place.name}}</th>
+                    <td>{{group.group_information.second_place_points}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"> <img id="img" src="{{group.group_information.third_place.shield_img}}" [hidden]="!group.group_information.third_place.shield_img"> {{group.group_information.third_place.name}}</th>
+                    <td>{{group.group_information.third_place_points}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"> <img id="img" src="{{group.group_information.fourth_place.shield_img}}" [hidden]="!group.group_information.fourth_place.shield_img"> {{group.group_information.fourth_place.name}}</th>
+                    <td>{{group.group_information.fourth_place_points}}</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <div id="btn-create">
+                <a routerLink="#" class="btn btn-outline-warning" (click)="getTeams(group.teams, group.group_information.id)" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Criar novo campeonato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label for="">Selecione o primeiro colocado:</label>
+                        <select (change)="handleTeamChange($event, 1)" [(ngModel)]="first_place" name="first_place">
+                            <option *ngFor="let team of teams" [ngValue]="team.id">
+                            {{ team.id }} - {{ team.name }}
+                            </option>
+                        </select>
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">  
+                        <label for="">Selecione o segundo colocado:</label>
+                        <select (change)="handleTeamChange($event, 2)" [(ngModel)]="second_place" name="second_place">
+                            <option *ngFor="let team of teams" [ngValue]="team.id">
+                            {{ team.id }} - {{ team.name }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label for="">Selecione o terceiro colocado:</label>
+                        <select (change)="handleTeamChange($event, 3)" [(ngModel)]="third_place" name="third_place">
+                            <option *ngFor="let team of teams" [ngValue]="team.id">
+                            {{ team.id }} - {{ team.name }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label for="">Selecione o quarto colocado:</label>
+                        <select (change)="handleTeamChange($event, 4)" [(ngModel)]="fourth_place" name="fourth_place">
+                            <option *ngFor="let team of teams" [ngValue]="team.id">
+                            {{ team.id }} - {{ team.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-outline form-white mb-2">
+                        <label>Pontos do primeiro colocado:</label>
+                        <input class="input" type="number" [(ngModel)]="first_place_points"  name="first_place_points">
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">
+                        <label>Pontos do segundo colocado:</label>
+                        <input class="input" type="number" [(ngModel)]="second_place_points"  name="second_place_points">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label>Pontos do terceiro colocado:</label>
+                        <input class="input" type="number" [(ngModel)]="third_place_points"  name="third_place_points">
+                    </div>
+
+                    <div class="form-outline form-white mb-2">  
+                        <label>Pontos do quarto colocado:</label>
+                        <input class="input" type="number" [(ngModel)]="fourth_place_points"  name="fourth_place_points">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success" (click)="updateGroup()" data-bs-dismiss="modal">Editar</button>
+            </div>
+      </div>
+    </div>
+</div>

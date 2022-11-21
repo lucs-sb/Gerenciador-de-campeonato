@@ -18,7 +18,7 @@ export class GroupService {
 
   constructor(private http: HttpClient, private storage: StorageService) { }
 
-  getGroups(championshipId: number): Observable<Group[]> {
+  getGroups(championshipId: any): Observable<Group[]> {
     {
       return this.http.get<Group[]>(this.API_URL+`/championship/${championshipId}`, this.HTTP_OPTIONS)
     }

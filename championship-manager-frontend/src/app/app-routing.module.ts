@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticatedGuard } from './authenticated.guard';
 import { ChampionshipDetailComponent } from './championship-detail/championship-detail.component';
+import { GroupComponent } from './group/group.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthenticatedGuard] },
   { path: 'championship/:id', component: ChampionshipDetailComponent, canActivate: [AuthenticatedGuard] },
+  { path: 'groups', component: GroupComponent, canActivate: [AuthenticatedGuard] },
   { path: 'teams', component: TeamComponent, canActivate: [AuthenticatedGuard] },
   { path: 'team/:id', component: TeamDetailComponent, canActivate: [AuthenticatedGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthenticatedGuard] },

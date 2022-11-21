@@ -61,7 +61,7 @@ export class UserComponent implements OnInit {
           });
           this.getUserById();
         }, () => {
-          this.notifier.notify('error', 'Não foi possível criar um novo campeonato no momento, tente novamente mais tarde');
+          this.notifier.notify('error', 'Não foi possível editar a conta no momento, tente novamente mais tarde');
         });
       }else
         this.notifier.notify('error','Preencha algum campo');
