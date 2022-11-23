@@ -31,4 +31,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
             "WHERE m.championship_id = :championshipId AND " +
             "(m.type = :search OR m.status = :search) AND m.deletion_date IS NULL", nativeQuery = true)
     List<Match> findByTypeAndStatusSearch(Long championshipId, int search);
+
+    List<Match> findByChampionshipIdAndJourney(Long id, String journey);
 }

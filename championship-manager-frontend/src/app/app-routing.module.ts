@@ -5,6 +5,7 @@ import { ChampionshipDetailComponent } from './championship-detail/championship-
 import { GroupComponent } from './group/group.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { MatchComponent } from './match/match.component';
 import { RegisterComponent } from './register/register.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { TeamComponent } from './team/team.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthenticatedGuard] },
   { path: 'championship/:id', component: ChampionshipDetailComponent, canActivate: [AuthenticatedGuard] },
   { path: 'groups', component: GroupComponent, canActivate: [AuthenticatedGuard] },
+  { path: 'matches', component: MatchComponent, canActivate: [AuthenticatedGuard] },
   { path: 'teams', component: TeamComponent, canActivate: [AuthenticatedGuard] },
   { path: 'team/:id', component: TeamDetailComponent, canActivate: [AuthenticatedGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthenticatedGuard] },

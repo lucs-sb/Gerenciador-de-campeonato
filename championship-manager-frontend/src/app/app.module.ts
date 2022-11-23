@@ -21,6 +21,7 @@ import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { ChampionshipDetailComponent } from './championship-detail/championship-detail.component';
 import { NavbarChampionshipComponent } from './navbar-championship/navbar-championship.component';
 import { GroupComponent } from './group/group.component';
+import { MatchComponent } from './match/match.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -75,7 +76,8 @@ const customNotifierOptions: NotifierOptions = {
     TeamDetailComponent,
     ChampionshipDetailComponent,
     NavbarChampionshipComponent,
-    GroupComponent
+    GroupComponent,
+    MatchComponent
   ],
   imports: [
     BrowserModule,

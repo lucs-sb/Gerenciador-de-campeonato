@@ -39,6 +39,7 @@ public class Match {
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
     private List<Event> events;
     private LocalDateTime deletionDate;
+    private String journey;
 
     public Match(){}
 }

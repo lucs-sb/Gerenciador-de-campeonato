@@ -1,0 +1,31 @@
+<notifier-container></notifier-container>
+<app-navbar></app-navbar>
+<app-navbar-championship></app-navbar-championship>
+
+<div class="row">
+    <h3 style="text-align: center; padding-right: 15%;">Partidas da fase de grupos</h3>
+    <a class="m-2 card" *ngFor="let match of matches" routerLink="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div class="card-top size-m">
+            Grupo {{match.name_group}}
+        </div>
+        <div class="card-group">
+            <div class="home-team-card size-m">
+                <div class="home-team">{{match.home_team.name}} <img class="img" src="https://tse4.mm.bing.net/th?id=OIP.j1qr2HFBM8yni075eobSBQHaHa&pid=Api&P=0" ></div>
+            </div>
+            <div class="scoreboard size-m">
+                {{match.scoreboard}}
+            </div>
+            <div class="away-team-card size-m">
+                <div class="away-team"><img class="img" src="https://tse4.mm.bing.net/th?id=OIP.j1qr2HFBM8yni075eobSBQHaHa&pid=Api&P=0"> {{match.away_team.name}}</div>
+            </div>
+        </div>
+    </a>
+    <div class="mt-3" style="text-align: center; padding-right: 15%;">
+        Próximo:
+        <select (change)="handlePageChange($event)">
+          <option *ngFor="let page of pages" [ngValue]="page">
+            {{ page }}
+          </option>
+        </select>
+      </div>
+</div>

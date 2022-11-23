@@ -100,4 +100,15 @@ public class MatchController {
             throw new Exception(e);
         }
     }
+
+    @GetMapping("/group-stage/championship/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<Match>> getMatchesInGroupStage(@PathVariable Long id, @RequestParam String journey) throws Exception{
+        try {
+            List<Match> matches = matchService.getMatchesInGroupStage(id, journey);
+            return new ResponseEntity<>(matches, HttpStatus.OK);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 }

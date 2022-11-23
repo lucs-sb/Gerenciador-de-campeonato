@@ -13,4 +13,6 @@ export interface Match{
     status: string;
     type: string;
     events: Event[];
+    journey: string;
+    name_group: string;
 }

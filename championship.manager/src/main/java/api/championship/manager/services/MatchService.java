@@ -150,6 +150,7 @@ public class MatchService {
                 match1.setStatus(MatchStatus.PROGRESS);
                 match1.setHome_team(group.getTeams().get(0));
                 match1.setAway_team(group.getTeams().get(2));
+                match1.setJourney("Jornada 1");
 
                 Match match2 = new Match();
                 match2.setChampionship(championship);
@@ -157,6 +158,7 @@ public class MatchService {
                 match2.setStatus(MatchStatus.PROGRESS);
                 match2.setHome_team(group.getTeams().get(1));
                 match2.setAway_team(group.getTeams().get(3));
+                match2.setJourney("Jornada 1");
 
                 Match match3 = new Match();
                 match3.setChampionship(championship);
@@ -164,6 +166,7 @@ public class MatchService {
                 match3.setStatus(MatchStatus.PROGRESS);
                 match3.setHome_team(group.getTeams().get(3));
                 match3.setAway_team(group.getTeams().get(0));
+                match3.setJourney("Jornada 2");
 
                 Match match4 = new Match();
                 match4.setChampionship(championship);
@@ -171,6 +174,7 @@ public class MatchService {
                 match4.setStatus(MatchStatus.PROGRESS);
                 match4.setHome_team(group.getTeams().get(2));
                 match4.setAway_team(group.getTeams().get(1));
+                match4.setJourney("Jornada 2");
 
                 Match match5 = new Match();
                 match5.setChampionship(championship);
@@ -178,6 +182,7 @@ public class MatchService {
                 match5.setStatus(MatchStatus.PROGRESS);
                 match5.setHome_team(group.getTeams().get(2));
                 match5.setAway_team(group.getTeams().get(3));
+                match5.setJourney("Jornada 3");
 
                 Match match6 = new Match();
                 match6.setChampionship(championship);
@@ -185,6 +190,7 @@ public class MatchService {
                 match6.setStatus(MatchStatus.PROGRESS);
                 match6.setHome_team(group.getTeams().get(1));
                 match6.setAway_team(group.getTeams().get(0));
+                match6.setJourney("Jornada 3");
 
                 Match match7 = new Match();
                 match7.setChampionship(championship);
@@ -192,6 +198,7 @@ public class MatchService {
                 match7.setStatus(MatchStatus.PROGRESS);
                 match7.setHome_team(group.getTeams().get(3));
                 match7.setAway_team(group.getTeams().get(2));
+                match7.setJourney("Jornada 4");
 
                 Match match8 = new Match();
                 match8.setChampionship(championship);
@@ -199,6 +206,7 @@ public class MatchService {
                 match8.setStatus(MatchStatus.PROGRESS);
                 match8.setHome_team(group.getTeams().get(0));
                 match8.setAway_team(group.getTeams().get(1));
+                match8.setJourney("Jornada 4");
 
                 Match match9 = new Match();
                 match9.setChampionship(championship);
@@ -206,6 +214,7 @@ public class MatchService {
                 match9.setStatus(MatchStatus.PROGRESS);
                 match9.setHome_team(group.getTeams().get(0));
                 match9.setAway_team(group.getTeams().get(3));
+                match9.setJourney("Jornada 5");
 
                 Match match10 = new Match();
                 match10.setChampionship(championship);
@@ -213,6 +222,7 @@ public class MatchService {
                 match10.setStatus(MatchStatus.PROGRESS);
                 match10.setHome_team(group.getTeams().get(1));
                 match10.setAway_team(group.getTeams().get(2));
+                match10.setJourney("Jornada 5");
 
                 Match match11 = new Match();
                 match11.setChampionship(championship);
@@ -220,6 +230,7 @@ public class MatchService {
                 match11.setStatus(MatchStatus.PROGRESS);
                 match11.setHome_team(group.getTeams().get(2));
                 match11.setAway_team(group.getTeams().get(0));
+                match11.setJourney("Jornada 6");
 
                 Match match12 = new Match();
                 match12.setChampionship(championship);
@@ -227,6 +238,7 @@ public class MatchService {
                 match12.setStatus(MatchStatus.PROGRESS);
                 match12.setHome_team(group.getTeams().get(3));
                 match12.setAway_team(group.getTeams().get(1));
+                match12.setJourney("Jornada 6");
 
                 List<Match> matches = Arrays.asList(match1, match2, match3, match4, match5, match6, match7, match8, match9, match10, match11, match12);
                 matchRepository.saveAll(matches);
@@ -394,6 +406,19 @@ public class MatchService {
 
         }
         catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Match> getMatchesInGroupStage(Long id, String journey) {
+        try {
+            List<Match> matches = matchRepository.findByChampionshipIdAndJourney(id, journey);
+            if (matches.isEmpty())
+                throw new MessageNotFoundException("Torneio sem partidas cadastradas");
+
+            return matches;
+        }catch (Exception e){
             throw e;
         }
     }

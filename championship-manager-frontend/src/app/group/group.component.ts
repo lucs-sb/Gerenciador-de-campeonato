@@ -71,8 +71,6 @@ export class GroupComponent implements OnInit {
     try {
       this.groupService.getGroups(this.championshipId).subscribe((res) => {
         this.groups = res;
-        for(var i = 0; i < this.groups.length; i++)
-          console.log(this.groups[i].group_information);
       },
       () => {
         this.notifier.notify('error', 'Não foi possível carregar os grupos no momento, tente novamente mais tarde');

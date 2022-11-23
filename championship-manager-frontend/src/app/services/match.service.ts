@@ -19,9 +19,15 @@ export class MatchService {
 
   constructor(private http: HttpClient, private storage: StorageService) { }
 
-  getAllMatches(pagination: string, championshipId: number): Observable<Pagination> {
+  getAllMatches(pagination: string, championshipId: any): Observable<Pagination> {
     {
       return this.http.get<Pagination>(this.API_URL+`/championship/${championshipId}`+pagination, this.HTTP_OPTIONS)
+    }
+  }
+
+  getMatchesInGroupStage(championshipId: any, journey: string): Observable<Match[]> {
+    {
+      return this.http.get<Match[]>(this.API_URL+`/championship/${championshipId}?journey=${journey}`, this.HTTP_OPTIONS)
     }
   }
 

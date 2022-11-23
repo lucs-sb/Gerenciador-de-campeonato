@@ -2,33 +2,33 @@
 <app-navbar></app-navbar>
 <app-navbar-championship></app-navbar-championship>
 
-<div class="container" *ngFor="let group of groups">
+<div class="row" *ngFor="let group of groups">
     <div class="card">
         <div class="card-top">
             <h2>Group {{group.name_group}}</h2>
         </div>
         <div class="card-group">
             <table class="table">
-                <thead>
+                <thead style="border: 0px solid white;">
                   <tr>
                     <th scope="col"></th>
                     <th scope="col">Pontos</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row"> <img id="img" src="{{group.group_information.first_place.shield_img}}" [hidden]="!group.group_information.first_place.shield_img"> {{group.group_information.first_place.name}}</th>
+                  <tr style="border-bottom: 0px solid rgb(235, 233, 233)">
+                    <th scope="row" style="border-left: 3px solid rgb(39, 80, 218);"> <img id="img" src="{{group.group_information.first_place.shield_img}}" [hidden]="!group.group_information.first_place.shield_img"> {{group.group_information.first_place.name}}</th>
                     <td>{{group.group_information.first_place_points}}</td>
                   </tr>
-                  <tr>
-                    <th scope="row"> <img id="img" src="{{group.group_information.second_place.shield_img}}" [hidden]="!group.group_information.second_place.shield_img"> {{group.group_information.second_place.name}}</th>
+                  <tr style="border-bottom: 2px solid rgb(235, 233, 233)">
+                    <th scope="row" style="border-left: 3px solid rgb(39, 80, 218);"> <img id="img" src="{{group.group_information.second_place.shield_img}}" [hidden]="!group.group_information.second_place.shield_img"> {{group.group_information.second_place.name}}</th>
                     <td>{{group.group_information.second_place_points}}</td>
                   </tr>
-                  <tr>
+                  <tr style="border-bottom: 2px solid rgb(235, 233, 233)">
                     <th scope="row"> <img id="img" src="{{group.group_information.third_place.shield_img}}" [hidden]="!group.group_information.third_place.shield_img"> {{group.group_information.third_place.name}}</th>
                     <td>{{group.group_information.third_place_points}}</td>
                   </tr>
-                  <tr>
+                  <tr style="border: 0px solid white;">
                     <th scope="row"> <img id="img" src="{{group.group_information.fourth_place.shield_img}}" [hidden]="!group.group_information.fourth_place.shield_img"> {{group.group_information.fourth_place.name}}</th>
                     <td>{{group.group_information.fourth_place_points}}</td>
                   </tr>
