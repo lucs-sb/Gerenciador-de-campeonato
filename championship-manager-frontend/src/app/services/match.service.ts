@@ -27,7 +27,7 @@ export class MatchService {
 
   getMatchesInGroupStage(championshipId: any, journey: string): Observable<Match[]> {
     {
-      return this.http.get<Match[]>(this.API_URL+`/championship/${championshipId}?journey=${journey}`, this.HTTP_OPTIONS)
+      return this.http.get<Match[]>(this.API_URL+`/group-stage/championship/${championshipId}?journey=${journey}`, this.HTTP_OPTIONS)
     }
   }
 

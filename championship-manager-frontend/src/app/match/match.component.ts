@@ -28,8 +28,8 @@ export class MatchComponent implements OnInit {
     status: ''
   });
   data: any;
-  journey = 'jornada 1';
-  pages = ['jornada 1', 'jornada 2', 'jornada 3', 'jornada 4', 'jornada 5', 'jornada 6'];
+  journey = 'Jornada 1';
+  pages = ['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 'Jornada 6'];
 
   /**
    * Constructor
