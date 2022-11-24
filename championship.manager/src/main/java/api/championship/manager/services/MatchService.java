@@ -15,11 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.*;
 
 @Service
@@ -100,16 +96,6 @@ public class MatchService {
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            Optional<Team> home_team = teamRepository.findById(newMatch.getHome_team().getId());
-            if (home_team.isEmpty())
-                throw new MessageNotFoundException("Time não encontrado");
-
-            Optional<Team> away_team = teamRepository.findById(newMatch.getAway_team().getId());
-            if (away_team.isEmpty())
-                throw new MessageNotFoundException("Time não encontrado");
-
-            match.get().setHome_team(home_team.get());
-            match.get().setAway_team(away_team.get());
             match.get().setDate(newMatch.getDate());
             match.get().setTime(newMatch.getTime());
             match.get().setPlace(newMatch.getPlace());
@@ -249,20 +235,20 @@ public class MatchService {
     }
 
     @Transactional
-    public void createKnockoutMatches(Long championshipId, MatchType type){
+    public void createKnockoutMatches(Long championshipId, int type){
         try {
             Optional<Championship> championship = championshipRepository.findById(championshipId);
             if (championship.isEmpty())
                 throw new MessageNotFoundException("Campeonato não encontrado");
 
             switch (type){
-                case QUARTER_FINAL:
+                case 1:
                     createQuarterFinal(championship.get());
                     break;
-                case SEMIFINALS:
+                case 2:
                     createSemiFinals(championship.get());
                     break;
-                case FINAL:
+                case 3:
                     createFinal(championship.get());
                     break;
                 default:
@@ -411,13 +397,12 @@ public class MatchService {
     }
 
     @Transactional(readOnly = true)
-    public List<Match> getMatchesInGroupStage(Long id, String journey) {
+    public List<Match> getMatchesByParams(Long id, String journey, int type) {
         try {
-            List<Match> matches = matchRepository.findByChampionshipIdAndJourney(id, journey);
-            if (matches.isEmpty())
-                throw new MessageNotFoundException("Torneio sem partidas cadastradas");
-
-            return matches;
+            if (!journey.isEmpty())
+                return matchRepository.findByChampionshipIdAndJourneyAndType(id, journey, type);
+            else
+                return matchRepository.findByChampionshipIdAndType(id, type);
         }catch (Exception e){
             throw e;
         }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(189, 189, 189);">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,13 @@
             <a class="nav-link" routerLink="/groups">Grupos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/matches">Partidas</a>
+            <a routerLink="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent">Partidas</a>
+            <ul class="navbar-nav collapse" id="navbarToggleExternalContent">
+              <li class="nav-item"><a class="nav-link" routerLink="/matches/group-stage">Fase de grupos</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="/matches/quarter-final">Quartas de finais</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="/matches/semifinals">Semi finais</a></li>
+              <li class="nav-item"><a class="nav-link" routerLink="/matches/final">Final</a></li>
+            </ul>
           </li>
         </ul>
       </div>

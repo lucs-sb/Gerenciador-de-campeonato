@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Match } from '../entities/match';
@@ -19,15 +19,15 @@ export class MatchService {
 
   constructor(private http: HttpClient, private storage: StorageService) { }
 
-  getAllMatches(pagination: string, championshipId: any): Observable<Pagination> {
+  /*getAllMatches(pagination: string, championshipId: any): Observable<Pagination> {
     {
       return this.http.get<Pagination>(this.API_URL+`/championship/${championshipId}`+pagination, this.HTTP_OPTIONS)
     }
-  }
+  }*/
 
-  getMatchesInGroupStage(championshipId: any, journey: string): Observable<Match[]> {
+  getMatchesByParams(championshipId: any, journey: any, type: any): Observable<Match[]> {
     {
-      return this.http.get<Match[]>(this.API_URL+`/group-stage/championship/${championshipId}?journey=${journey}`, this.HTTP_OPTIONS)
+      return this.http.get<Match[]>(this.API_URL+`/championship/${championshipId}?journey=${journey}&type=${type}`, this.HTTP_OPTIONS)
     }
   }
 
@@ -47,8 +47,10 @@ export class MatchService {
     return this.http.post<any>(this.API_URL, match, this.HTTP_OPTIONS); 
   }
 
-  createKnockoutMatches(championshipId: number, type: string) {
-    return this.http.post<any>(this.API_URL+`/championship/${championshipId}/?type=${type}`, this.HTTP_OPTIONS); 
+  createKnockoutMatches(championshipId: any, type: any): Observable<HttpResponse<any>> {
+    return this.http.post<any>(this.API_URL+`/championship/${championshipId}?type=${type}`, this.HTTP_OPTIONS, {
+      observe: 'response'
+    });
   }
 
   updateMatch(match: any, id: number) {

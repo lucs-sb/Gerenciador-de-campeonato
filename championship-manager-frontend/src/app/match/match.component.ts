@@ -30,6 +30,11 @@ export class MatchComponent implements OnInit {
   data: any;
   journey = 'Jornada 1';
   pages = ['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 'Jornada 6'];
+  isGroup = false;
+  isQuarterFinal = false;
+  isSemifinal = false;
+  isFinal = false;
+  href = '';
 
   /**
    * Constructor
@@ -46,12 +51,25 @@ export class MatchComponent implements OnInit {
     private groupService: GroupService) { this.notifier = notifier; }
 
   ngOnInit(): void {
-    this.getMatchesByChampionship();
+    this.href = this.router.url.split('/')[2];
+    if(this.href == 'group-stage'){
+      this.isGroup = true;
+      this.getMatchesInGroupStage();
+    } else if(this.href == 'quarter-final'){
+      this.isQuarterFinal = true;
+      this.getMatchesInQuarterFinal();
+    } else if(this.href == 'semifinals'){
+      this.isSemifinal = true;
+      this.getMatchesInSemifinals();
+    } else if(this.href == 'final'){
+      this.isFinal = true;
+      this.getMatchesInFinal();
+    }
   }
 
-  getMatchesByChampionship(): void{
+  getMatchesInGroupStage(): void{
     try {
-      this.matchService.getMatchesInGroupStage(this.championshipId, this.journey).subscribe((res) => {
+      this.matchService.getMatchesByParams(this.championshipId, this.journey, 0).subscribe((res) => {
         this.matches = res;
 
         try {
@@ -81,8 +99,60 @@ export class MatchComponent implements OnInit {
     }
   }
 
+  getMatchesInQuarterFinal(): void{
+    try {
+      this.matchService.getMatchesByParams(this.championshipId, '', 1).subscribe((res) => {
+        this.matches = res;
+      },
+      () => {
+        this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+      });
+    } catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
+  }
+
+  getMatchesInSemifinals(): void{
+    try {
+      this.matchService.getMatchesByParams(this.championshipId, '', 2).subscribe((res) => {
+        this.matches = res;
+      },
+      () => {
+        this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+      });
+    } catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
+  }
+
+  getMatchesInFinal(): void{
+    try {
+      this.matchService.getMatchesByParams(this.championshipId, '', 3).subscribe((res) => {
+        this.matches = res;
+      },
+      () => {
+        this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+      });
+    } catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
+  }
+
   handlePageChange(event: any): void {
     this.journey = event.target.value;
-    this.getMatchesByChampionship();
+    this.getMatchesInGroupStage();
+  }
+
+  createMatches(number: number): void{
+    try {
+      this.matchService.createKnockoutMatches(this.championshipId, number).subscribe(() => {
+        this.notifier.notify('success', 'Partidas das quartas de finais criada com sucesso');
+      },
+      (res) => {
+        this.notifier.notify('error', res.error.message);
+      });
+    } catch (ex: any) {
+      this.notifier.notify('error', ex);
+    }
   }
 }

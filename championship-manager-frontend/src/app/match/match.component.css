@@ -1,6 +1,6 @@
 .row{
     padding-top: 40px;
-    padding-left: 15%;
+    justify-content: center;
 }
 
 
@@ -18,7 +18,7 @@
     flex-direction: column;
     justify-content: center;
     position: relative;
-    width: 40%;
+    width: 580px;
     height: 4.5rem;
 }
 

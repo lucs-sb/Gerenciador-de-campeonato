@@ -23,16 +23,16 @@ public class MatchController {
     @Autowired
     private MatchService matchService;
 
-    @GetMapping("/championship/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<Page<Match>> getMatches(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long id) throws Exception{
-        try {
-            Page<Match> matches = matchService.getMatches(id, pageable);
-            return new ResponseEntity<>(matches, HttpStatus.OK);
-        }catch (Exception e){
-            throw new Exception(e);
-        }
-    }
+//    @GetMapping("/championship/{id}")
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+//    public ResponseEntity<Page<Match>> getMatches(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long id) throws Exception{
+//        try {
+//            Page<Match> matches = matchService.getMatches(id, pageable);
+//            return new ResponseEntity<>(matches, HttpStatus.OK);
+//        }catch (Exception e){
+//            throw new Exception(e);
+//        }
+//    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
@@ -58,9 +58,9 @@ public class MatchController {
 
     @PostMapping("/championship/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity createKnockoutMatches(@PathVariable Long id, @RequestParam String type) throws Exception{
+    public ResponseEntity createKnockoutMatches(@PathVariable Long id, @RequestParam int type) throws Exception{
         try {
-            matchService.createKnockoutMatches(id, MatchType.valueOf(type));
+            matchService.createKnockoutMatches(id, type);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (Exception e){
             throw new Exception(e);
@@ -101,11 +101,11 @@ public class MatchController {
         }
     }
 
-    @GetMapping("/group-stage/championship/{id}")
+    @GetMapping("/championship/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Match>> getMatchesInGroupStage(@PathVariable Long id, @RequestParam String journey) throws Exception{
+    public ResponseEntity<List<Match>> getMatchesByParams(@PathVariable Long id, @RequestParam String journey, @RequestParam int type) throws Exception{
         try {
-            List<Match> matches = matchService.getMatchesInGroupStage(id, journey);
+            List<Match> matches = matchService.getMatchesByParams(id, journey, type);
             return new ResponseEntity<>(matches, HttpStatus.OK);
         }catch (Exception e){
             throw new Exception(e);
