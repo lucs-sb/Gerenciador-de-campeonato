@@ -4,20 +4,20 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" routerLink="/championship/{{championship_id}}">Detalhes do campeonato</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/groups">Grupos</a>
           </li>
-          <li class="nav-item">
-            <a routerLink="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent">Partidas</a>
-            <ul class="navbar-nav collapse" id="navbarToggleExternalContent">
-              <li class="nav-item"><a class="nav-link" routerLink="/matches/group-stage">Fase de grupos</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="/matches/quarter-final">Quartas de finais</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="/matches/semifinals">Semi finais</a></li>
-              <li class="nav-item"><a class="nav-link" routerLink="/matches/final">Final</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Partidas</a>
+            <ul class="dropdown-menu" style="background-color: rgb(189, 189, 189);">
+              <li class="dropdown-item"><a class="dropdown-item" routerLink="/matches/group-stage">Fase de grupos</a></li>
+              <li class="dropdown-item"><a class="dropdown-item" routerLink="/matches/quarter-final">Quartas de finais</a></li>
+              <li class="dropdown-item"><a class="dropdown-item" routerLink="/matches/semifinals">Semi finais</a></li>
+              <li class="dropdown-item"><a class="dropdown-item" routerLink="/matches/final">Final</a></li>
             </ul>
           </li>
         </ul>

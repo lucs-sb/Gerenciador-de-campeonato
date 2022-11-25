@@ -47,7 +47,6 @@ export class MatchComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private matchService: MatchService,
-    private teamService: TeamService,
     private groupService: GroupService) { this.notifier = notifier; }
 
   ngOnInit(): void {
@@ -106,6 +105,7 @@ export class MatchComponent implements OnInit {
       },
       () => {
         this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+        this.router.navigate(['/championship/'+this.championshipId]);
       });
     } catch (ex: any) {
       this.notifier.notify('error', ex);
@@ -119,6 +119,7 @@ export class MatchComponent implements OnInit {
       },
       () => {
         this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+        this.router.navigate(['/championship/'+this.championshipId]);
       });
     } catch (ex: any) {
       this.notifier.notify('error', ex);
@@ -131,7 +132,8 @@ export class MatchComponent implements OnInit {
         this.matches = res;
       },
       () => {
-        this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+        this.notifier.notify('error', 'Não foi possível carregar a partida no momento, tente novamente mais tarde');
+        this.router.navigate(['/championship/'+this.championshipId]);
       });
     } catch (ex: any) {
       this.notifier.notify('error', ex);
@@ -146,7 +148,7 @@ export class MatchComponent implements OnInit {
   createMatches(number: number): void{
     try {
       this.matchService.createKnockoutMatches(this.championshipId, number).subscribe(() => {
-        this.notifier.notify('success', 'Partidas das quartas de finais criada com sucesso');
+        this.notifier.notify('success', 'Partidas criadas com sucesso');
       },
       (res) => {
         this.notifier.notify('error', res.error.message);

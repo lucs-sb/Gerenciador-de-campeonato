@@ -5,7 +5,7 @@
 <div class="row" [hidden]="!isGroup">
     <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(1)">Criar partidas das quartas de finais</button></div>
     <h3 style="text-align: center;">Partidas da fase de grupos</h3>
-    <a class="m-2 card" *ngFor="let match of matches" routerLink="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-top size-m">
             Grupo {{match.name_group}}
         </div>
@@ -37,7 +37,7 @@
 <div class="row" [hidden]="!isQuarterFinal">
     <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(2)">Criar partidas das semi finais</button></div>
     <h3 style="text-align: center;">Partidas das quartas de finais</h3>
-    <a class="m-2 card" *ngFor="let match of matches" routerLink="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-group">
             <div class="home-team-card size-m">
                 <div class="home-team">{{match.home_team.name}} <img class="img" src="{{match.home_team.shield_img}}" [hidden]="!match.home_team.shield_img"></div>
@@ -58,7 +58,7 @@
 <div class="row" [hidden]="!isSemifinal">
     <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(3)">Criar partida da final</button></div>
     <h3 style="text-align: center;">Partidas das semi finais</h3>
-    <a class="m-2 card" *ngFor="let match of matches" routerLink="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-group">
             <div class="home-team-card size-m">
                 <div class="home-team">{{match.home_team.name}} <img class="img" src="{{match.home_team.shield_img}}" [hidden]="!match.home_team.shield_img"></div>
@@ -78,7 +78,7 @@
 
 <div class="row" [hidden]="!isFinal">
     <h3 style="text-align: center;">Final</h3>
-    <a class="m-2 card" *ngFor="let match of matches" routerLink="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-group">
             <div class="home-team-card size-m">
                 <div class="home-team">{{match.home_team.name}} <img class="img" src="{{match.home_team.shield_img}}" [hidden]="!match.home_team.shield_img"></div>

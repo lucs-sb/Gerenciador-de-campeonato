@@ -270,6 +270,10 @@ public class MatchService {
             int index;
             int size = 4;
 
+            List<Match> matchesGroupStage = matchRepository.findMatchesByTypeAndStatusAndChampionshipId(championship.getId(), MatchType.GROUP_STAGE.ordinal(), MatchStatus.CLOSED.ordinal());
+            if (matchesGroupStage.isEmpty() || matchesGroupStage.size() < 48)
+                throw new MessageBadRequestException("Todos os jogos da fase de grupos devem estar encerrados");
+
             List<Group> groups = groupRepository.findGroupsByChampionshipId(championship.getId());
             if (groups.isEmpty())
                 throw new MessageNotFoundException("Grupos não encontrados");
