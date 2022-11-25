@@ -2,7 +2,7 @@
 <app-navbar></app-navbar>
 <app-navbar-championship></app-navbar-championship>
 
-<div class="row" *ngFor="let group of groups">
+<a class="row" *ngFor="let group of groups" routerLink="#" (click)="getTeams(group.teams, group.group_information.id)" data-bs-toggle="modal" data-bs-target="#exampleModal">
     <div class="card">
         <div class="card-top">
             <h2>Grupo {{group.name_group}}</h2>
@@ -35,13 +35,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="modal-footer">
-            <div id="btn-create">
-                <a routerLink="#" class="btn btn-outline-warning" (click)="getTeams(group.teams, group.group_information.id)" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</a>
-            </div>
-        </div>
     </div>
-</div>
+</a>
 
 <div class="modal" id="exampleModal" tabindex="-1">
     <div class="modal-dialog">
