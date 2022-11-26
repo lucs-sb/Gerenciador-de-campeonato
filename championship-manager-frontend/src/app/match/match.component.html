@@ -3,7 +3,7 @@
 <app-navbar-championship></app-navbar-championship>
 
 <div class="row" [hidden]="!isGroup">
-    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(1)">Criar partidas das quartas de finais</button></div>
+    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(1)" [hidden]="!createMatchesQuarterFinal">Criar partidas das quartas de finais</button></div>
     <h3 style="text-align: center;">Partidas da fase de grupos</h3>
     <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/{{match.id}}">
         <div class="card-top size-m">
@@ -35,7 +35,7 @@
 </div>
 
 <div class="row" [hidden]="!isQuarterFinal">
-    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(2)">Criar partidas das semi finais</button></div>
+    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(2)"  [hidden]="!createMatchesSemifinal">Criar partidas das semi finais</button></div>
     <h3 style="text-align: center;">Partidas das quartas de finais</h3>
     <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-group">
@@ -56,7 +56,7 @@
 </div>
 
 <div class="row" [hidden]="!isSemifinal">
-    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(3)">Criar partida da final</button></div>
+    <div class="modal-footer"><button type="button" style="margin-right: 50px" class="btn btn-outline-secondary" (click)="createMatches(3)"  [hidden]="!createMatchFinal">Criar partida da final</button></div>
     <h3 style="text-align: center;">Partidas das semi finais</h3>
     <a class="m-2 card" *ngFor="let match of matches" routerLink="/match/match.id">
         <div class="card-group">

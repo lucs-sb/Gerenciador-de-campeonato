@@ -27,6 +27,9 @@ export class MatchComponent implements OnInit {
   isSemifinal = false;
   isFinal = false;
   href = '';
+  createMatchesQuarterFinal = true;
+  createMatchesSemifinal = true;
+  createMatchFinal = true;
 
   /**
    * Constructor
@@ -61,6 +64,20 @@ export class MatchComponent implements OnInit {
   getMatchesInGroupStage(): void{
     try {
       this.matchService.getMatchesByParams(this.championshipId, this.journey, 0).subscribe((res) => {
+
+        try {
+          this.matchService.getMatchesByParams(this.championshipId, '', 1).subscribe((res) => {
+            if(res.length != 0)
+              this.createMatchesQuarterFinal = false;
+          },
+          () => {
+            this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+            this.router.navigate(['/championship/'+this.championshipId]);
+          });
+        } catch (ex: any) {
+          this.notifier.notify('error', ex);
+        }
+        
         this.matches = res;
 
         try {
@@ -93,6 +110,20 @@ export class MatchComponent implements OnInit {
   getMatchesInQuarterFinal(): void{
     try {
       this.matchService.getMatchesByParams(this.championshipId, '', 1).subscribe((res) => {
+        
+        try {
+          this.matchService.getMatchesByParams(this.championshipId, '', 2).subscribe((res) => {
+            if(res.length != 0)
+              this.createMatchesSemifinal = false;
+          },
+          () => {
+            this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+            this.router.navigate(['/championship/'+this.championshipId]);
+          });
+        } catch (ex: any) {
+          this.notifier.notify('error', ex);
+        }
+        
         this.matches = res;
       },
       () => {
@@ -107,6 +138,20 @@ export class MatchComponent implements OnInit {
   getMatchesInSemifinals(): void{
     try {
       this.matchService.getMatchesByParams(this.championshipId, '', 2).subscribe((res) => {
+
+        try {
+          this.matchService.getMatchesByParams(this.championshipId, '', 3).subscribe((res) => {
+            if(res.length != 0)
+              this.createMatchFinal = false;
+          },
+          () => {
+            this.notifier.notify('error', 'Não foi possível carregar as partidas no momento, tente novamente mais tarde');
+            this.router.navigate(['/championship/'+this.championshipId]);
+          });
+        } catch (ex: any) {
+          this.notifier.notify('error', ex);
+        }
+        
         this.matches = res;
       },
       () => {

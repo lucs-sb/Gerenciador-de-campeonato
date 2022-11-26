@@ -44,6 +44,8 @@ export class TeamDetailComponent implements OnInit {
   pageSizes = [15, 20, 25];
   totalPages = [0];
   player_id: number = 0;
+  next = true;
+  previous = true;
 
   /**
    * Constructor
@@ -82,6 +84,23 @@ export class TeamDetailComponent implements OnInit {
           
           for(var i = 0; i < res.totalPages; i++)
             this.totalPages[i] = i;
+
+          if(this.page == 0)
+            this.previous = true;
+          else
+            this.previous = false;
+      
+          if(this.page == this.totalPages.length - 1)
+            this.next = true;
+          else
+            this.next = false;
+  
+          for(var i = 0; i < this.totalPages.length; i++){
+            if(document.getElementById(this.totalPages[i].toString())?.innerText != this.page.toString())
+              document.getElementById(this.totalPages[i].toString())?.classList.remove("active");
+            else
+              document.getElementById(this.totalPages[i].toString())?.classList.add("active");
+          }
         }, () => {
           this.notifier.notify('error', 'Não foi possível carregar os jogadores no momento, tente novamente mais tarde');
         });
@@ -190,7 +209,26 @@ export class TeamDetailComponent implements OnInit {
   }
 
   handlePageChange(event: any): void {
-    this.page = event.target.value;
+    if('previous' == event)
+      this.page -= 1;
+    else if('next' == event)
+      this.page += 1;
+    else
+      this.page = event;
+    
+    if(event == 0 || this.page == 0)
+      this.previous = true;
+
+    if(event == this.totalPages.length - 1 || this.page == this.totalPages.length - 1)
+      this.next = true;
+
+    for(var i = 0; i < this.totalPages.length; i++){
+      if(document.getElementById(this.totalPages[i].toString())?.innerText != this.page.toString())
+        document.getElementById(this.totalPages[i].toString())?.classList.remove("active");
+      else
+        document.getElementById(this.totalPages[i].toString())?.classList.add("active");
+    }
+
     this.getPlayersByTeam();
   }
 

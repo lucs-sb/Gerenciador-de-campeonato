@@ -38,19 +38,36 @@
         </div>
       </a>
     </div>
-    <div class="mt-3" style="text-align: center;">
-      Itens por busca:
-      <select (change)="handlePageSizeChange($event)">
-        <option *ngFor="let size of pageSizes" [ngValue]="size">
-          {{ size }}
-        </option>
-      </select>
-      Próximo:
-      <select (change)="handlePageChange($event)">
-        <option *ngFor="let size of totalPages" [ngValue]="size">
-          {{ size }}
-        </option>
-      </select>
+    <div class="mt-3 container">
+      <div class="page-size">
+        Itens por busca:
+        <select (change)="handlePageSizeChange($event)">
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+      <div class="page">
+        <ul class="pagination pagination-sm">
+          <li class="page-item">
+            <a class="page-link" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link disabled" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="!previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" id="{{size}}" *ngFor="let size of totalPages"><a class="page-link" (click)="handlePageChange(size)">{{ size }}</a></li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Next" (click)="handlePageChange('next')" [hidden]="next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link disabled" aria-label="Next" (click)="handlePageChange('next')" [hidden]="!next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 </div>
 

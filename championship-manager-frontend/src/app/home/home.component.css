@@ -18,3 +18,22 @@
     color: black;
     display: block;
 }
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "select ul";
+}
+
+.page-size{
+    grid-area: select;
+    text-align: end;
+    padding-top: 3px;
+    padding-right: 10px;
+}
+
+.page{
+    grid-area: ul;
+    justify-content: center;
+}
