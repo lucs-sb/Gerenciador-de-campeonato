@@ -2,14 +2,19 @@ package api.championship.manager.services;
 
 import api.championship.manager.dtos.PlayerDTO;
 import api.championship.manager.execeptionHandler.exceptions.MessageNotFoundException;
+import api.championship.manager.models.Match;
 import api.championship.manager.models.Player;
 import api.championship.manager.models.Team;
+import api.championship.manager.models.User;
 import api.championship.manager.repositories.PlayerRepository;
 import api.championship.manager.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -49,7 +54,7 @@ public class PlayerService {
                 throw new MessageNotFoundException("Jogador não existe");
 
             player.get().setName(newPlayer.getName());
-            player.get().setTeam(team.get());
+
             playerRepository.save(player.get());
         }catch (Exception ex){
             throw ex;
@@ -63,11 +68,24 @@ public class PlayerService {
             if (player.isEmpty())
                 throw new MessageNotFoundException("Jogador não existe");
 
-            player.get().getTeam().getPlayers().remove(player.get());
+            player.get().setDeletionDate(LocalDateTime.now());
 
-            playerRepository.delete(player.get());
+            playerRepository.save(player.get());
         }catch (Exception ex){
             throw ex;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Player> getAllPlayersByTeam(Long team_id, Pageable pageable) {
+        try {
+            Optional<Team> team = teamRepository.findById(team_id);
+            if (team.isEmpty())
+                throw new MessageNotFoundException("Time não encontrado");
+
+            return playerRepository.findByTeamIdAndDeletionDateIsNull(team.get().getId(), pageable);
+        }catch (Exception e){
+            throw e;
         }
     }
 }

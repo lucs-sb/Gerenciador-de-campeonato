@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_player")
@@ -19,6 +20,7 @@ public class Player {
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
+    private LocalDateTime deletionDate;
 
     public Player(){}
 }

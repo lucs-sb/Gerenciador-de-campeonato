@@ -1,0 +1,102 @@
+.row{
+    width: 500px;
+    margin: auto;
+    padding-top: 100px;
+}
+
+.card{
+    box-shadow: 1px 1px 5px;
+    padding: 15px;
+
+}
+
+.card-top{
+    display: grid;
+    grid-template-columns: 1.3fr 0.6fr 1.3fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "home-team scoreboard away-team";
+}
+
+.img{
+    height: 32px;
+    width: 32px;
+}
+
+.home-team-card{
+    grid-area: home-team;
+    font-size: 16px;
+    flex-direction: row;
+    order: 1;
+    align-items: center;
+    display: flex;
+    flex: 1 0 30%;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.away-team-card{
+    grid-area: away-team;
+    font-size: 16px;
+    flex-direction: row-reverse;
+    order: 3;
+    align-items: center;
+    display: flex;
+    flex: 1 0 30%;
+    justify-content: flex-end;
+    position: relative;
+
+}
+
+.scoreboard{
+    grid-area: scoreboard;
+    font-size: 25px;
+    order: 4;
+    align-items: center;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #30316e;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+    padding-bottom: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 0px;
+    width: 100%;
+}
+
+.home-team{
+    margin-right: 8px;
+    text-align: right;
+    font-size: 20px;
+    color: #30316e;
+    flex: 1 0 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+.away-team{
+    margin-left: 8px;
+    text-align: left;
+    font-size: 20px;
+    color: #30316e;
+    flex: 1 0 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.card-group{
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+
+.card-group > label{
+    width: 100%;
+    color: black;
+    display: block;
+}
+
+.form-outline > label{
+    width: 100%;
+    color: black;
+    display: block;
+}

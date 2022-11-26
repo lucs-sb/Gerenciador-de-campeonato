@@ -1,0 +1,97 @@
+.page {
+    position: relative;
+    cursor: pointer;
+}
+
+.heroes a {
+    position: absolute;
+    left: 80%;
+    top: 5px;
+    background-color: white;
+    color:  #525252;
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 1px 10px 3px 10px;
+}
+  
+.heroes a:hover {
+    background-color: rgb(231, 227, 4);
+    color: white;
+}
+  
+button.delete {
+    position: absolute;
+    left: 65%;
+    top: 5px;
+    background-color: white;
+    color:  #525252;
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 1px 10px 3px 10px;
+}
+  
+button.delete:hover {
+    background-color: red;
+    color: white;
+}
+
+.row{
+    width: 100%;
+    margin: auto;
+}
+
+.card{
+    padding: 30px;
+}
+
+.card-top{
+    padding: 40px;
+    text-align: center;
+}
+
+.card-group{
+    margin-bottom: 10px;
+}
+
+.card-group > label{
+    width: 100%;
+    color: black;
+    display: block;
+}
+
+.form-outline > label{
+    width: 100%;
+    color: black;
+    display: block;
+}
+
+#img{
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+}
+
+.page > label{
+    width: 100%;
+    color: black;
+    display: block;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "select ul";
+}
+
+.page-size{
+    grid-area: select;
+    text-align: end;
+    padding-top: 3px;
+    padding-right: 10px;
+}
+
+.page{
+    grid-area: ul;
+    justify-content: center;
+}

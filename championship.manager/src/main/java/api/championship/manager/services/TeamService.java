@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -35,7 +35,7 @@ public class TeamService {
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            return repository.findByUserId(user.get().getId(), pageable);
+            return repository.findByUserIdAndDeletionDateIsNull(user.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }
@@ -55,50 +55,16 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public List<Team> getTeamsBySearch(Long user_id, String search){
+    public Page<Team> getTeamsBySearch(Long user_id, String search, Pageable pageable){
         try {
             Optional<User> user = userRepository.findById(user_id);
             if (user.isEmpty())
                 throw new MessageNotFoundException("Usuário não encontrado");
 
-            return repository.findByNameOrAbbreviation(user_id, search);
-        }catch (Exception e){
-            throw e;
-        }
-    }
+            if (search.isEmpty())
+                return repository.findByUserIdAndDeletionDateIsNull(user.get().getId(), pageable);
 
-    @Transactional(readOnly = true)
-    public List<Team> getAllTeamsThatAreNotInTheChampionship(Long user_id, Long championship_id){
-        try {
-            Optional<User> user = userRepository.findById(user_id);
-            if (user.isEmpty())
-                throw new MessageNotFoundException("Usuário não encontrado");
-
-            List<Team> teams = repository.findAll();
-            List<Team> championship_teams = repository.findByUserIdAndChampionshipId(user_id, championship_id);
-
-            championship_teams.forEach(team -> {
-                teams.removeIf(team1 -> team1.getId().equals(team.getId()));
-            });
-
-            return teams;
-        }catch (Exception e){
-            throw e;
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public void addTeamInChampionship(Long championship_id, List<Long> teams_ids){
-        try {
-            Optional<Championship> championship = championshipRepository.findById(championship_id);
-            if (championship.isEmpty())
-                throw new MessageNotFoundException("Campeonato não encontrado");
-
-            teams_ids.forEach(id -> {
-            Optional<Team> team = repository.findById(id);
-            team.ifPresent(championship.get().getTeams()::add);
-            team.ifPresent(value -> value.getChampionships().add(championship.get()));
-            });
+            return repository.findByNameOrAbbreviation(user_id, search, pageable);
         }catch (Exception e){
             throw e;
         }
@@ -147,9 +113,9 @@ public class TeamService {
             if (team.isEmpty())
                 throw new MessageNotFoundException("Time não encontrado");
 
-            team.get().getChampionships().forEach(c -> {c.getTeams().remove(team.get());});
+            team.get().setDeletionDate(LocalDateTime.now());
 
-            repository.delete(team.get());
+            repository.save(team.get());
         }catch (Exception e){
             throw e;
         }

@@ -46,22 +46,10 @@ public class TeamController {
 
     @GetMapping(value = "/user/{user_id}/search")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Team>> getBySearch(@PathVariable Long user_id, @RequestParam("search") String search)
+    public ResponseEntity<Page<Team>> getBySearch(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "id") Pageable pageable, @PathVariable Long user_id, @RequestParam("search") String search)
             throws Exception {
         try {
-            List<Team> teams = service.getTeamsBySearch(user_id, search);
-            return new ResponseEntity<>(teams, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
-
-    @GetMapping(value = "/user/{user_id}/championship/{championship_id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Team>> getAllTeamsThatAreNotInTheChampionship(@PathVariable Long user_id, @PathVariable Long championship_id)
-            throws Exception {
-        try {
-            List<Team> teams = service.getAllTeamsThatAreNotInTheChampionship(user_id, championship_id);
+            Page<Team> teams = service.getTeamsBySearch(user_id, search, pageable);
             return new ResponseEntity<>(teams, HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e);
@@ -74,17 +62,6 @@ public class TeamController {
         try {
             service.addTeam(user_id, team);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (Exception e){
-            throw new Exception(e);
-        }
-    }
-
-    @PostMapping("/championship/{championship_id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity addTeamInChampionship(@RequestParam List<Long> teams_id, @PathVariable Long championship_id) throws Exception{
-        try {
-            service.addTeamInChampionship(championship_id, teams_id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (Exception e){
             throw new Exception(e);
         }

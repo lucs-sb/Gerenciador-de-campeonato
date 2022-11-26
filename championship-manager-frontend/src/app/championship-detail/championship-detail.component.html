@@ -1,0 +1,77 @@
+<notifier-container></notifier-container>
+<app-navbar></app-navbar>
+<app-navbar-championship></app-navbar-championship>
+
+<div *ngIf="championship" class="row">
+    <div class="card">
+        <div class="card-top">
+            <h2>{{championship.name | uppercase}}</h2>
+        </div>
+        <div class="card-group">
+            <label>Nome</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{championship.name}}</p>
+        </div>
+        <div class="card-group">
+            <label>Descrição</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{championship.description}}</p>
+        </div>
+        <div class="card-group">
+            <label>Premiação</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{championship.award}}</p>
+        </div>
+        <div class="card-group">
+            <label>Status</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{championship.status}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()" style="margin: 5px;">Voltar</button>
+            <div id="btn-create">
+                <a routerLink="#" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</a>
+            </div>
+            <button type="button" class="btn btn-outline-danger" style="margin: 5px" (click)="deleteChampionship()" data-bs-dismiss="modal">Excluir campeonato</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar campeonato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formChampionship" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Nome</label>
+                        <input class="input" type="text" formControlName="name" placeholder="Nome">
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">
+                        <label>Descrição</label>
+                        <input class="input" type="text" formControlName="description" placeholder="Descrição">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Premiação</label>
+                        <input class="input" type="text" formControlName="award" placeholder="Premiação">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label>Status</label>
+                        <select (change)="handleStatusChange($event)">
+                            <option *ngFor="let s of status" [ngValue]="s" formControlName="status">
+                                {{ s }}
+                            </option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-warning" style="margin: 5px" (click)="updateChampionship()" data-bs-dismiss="modal">Editar</button>
+            </div>
+      </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_group_information")
@@ -25,6 +26,7 @@ public class GroupInformation {
     private int second_place_points;
     private int third_place_points;
     private int fourth_place_points;
+    private LocalDateTime deletionDate;
 
     public GroupInformation(){}
 }

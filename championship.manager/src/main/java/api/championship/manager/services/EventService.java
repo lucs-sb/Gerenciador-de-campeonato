@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class EventService {
             if (match.isEmpty())
                 throw new MessageNotFoundException("Partida não encontrada");
 
-            return eventRepository.findByMatchId(match.get().getId(), pageable);
+            return eventRepository.findByMatchIdAndDeletionDateIsNull(match.get().getId(), pageable);
         }catch (Exception e){
             throw e;
         }
@@ -112,9 +113,9 @@ public class EventService {
             if (event.isEmpty())
                 throw new MessageNotFoundException("Evento não encontrado");
 
-            event.get().getMatch().getEvents().remove(event.get());
+            event.get().setDeletionDate(LocalDateTime.now());
 
-            eventRepository.delete(event.get());
+            eventRepository.save(event.get());
         }catch (Exception e){
             throw e;
         }

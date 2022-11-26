@@ -1,0 +1,109 @@
+<app-navbar></app-navbar>
+<notifier-container></notifier-container>
+
+<div class="p-5 pb-0">
+    <div class="row">
+      <div class="col-10">
+        <div id="div-search" class="input-group mb-3">
+            <input [(ngModel)]="search" type="text" class="form-control" placeholder="Buscar por times" aria-describedby="basic-addon2">
+            <select name="teams" id="teams" [(ngModel)]="ordination" style="margin: 3px">
+              <option value="asc">tipo de ordenação</option>
+              <option value="asc">+antigos</option>
+              <option value="desc">+recentes</option>
+                <option value="name">nome</option>
+            </select>
+            <div class="input-group-append" style="margin: 3px">
+                <button (click)="searchTeams()" class="btn btn-outline-secondary" type="button">Pesquisar</button>
+            </div>
+            <div class="input-group-append" style="margin: 3px">
+                <a routerLink="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">+Adiconar</a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="p-5 pt-0">
+    <div class="row">
+      <a *ngFor="let team of teams | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index" class="col-4 m-2 card" style="width: 30%;" routerLink="/team/{{team.id}}">
+        <div class="card-body">
+            <div>
+                <img id="img" class="card-img-top" src="{{team.shield_img}}" alt="Card image cap" [hidden]="!team.shield_img">
+            </div>
+          <div>
+            <input type="hidden" [(ngModel)]="team.name">
+            <h4 class="card-title text-center">{{team.name}} - {{team.abbreviation}}</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="mt-3 container">
+      <div class="page-size">
+        Itens por busca:
+        <select (change)="handlePageSizeChange($event)">
+          <option *ngFor="let size of pageSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+      <div class="page">
+        <ul class="pagination pagination-sm">
+          <li class="page-item">
+            <a class="page-link" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link disabled" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="!previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" id="{{size}}" *ngFor="let size of totalPages"><a class="page-link" (click)="handlePageChange(size)">{{ size }}</a></li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Next" (click)="handlePageChange('next')" [hidden]="next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link disabled" aria-label="Next" (click)="handlePageChange('next')" [hidden]="!next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Criar novo time</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formTeam" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                      <label>Nome</label>
+                        <input class="input" id="name" type="text" formControlName="name" placeholder="Nome">
+                        <div *ngIf="formTeam.get('name')?.errors?.['required'] && formTeam.get('name')?.touched" style="color: red;">
+                            Nome obrigatório
+                        </div>
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">
+                      <label>Abreviação do nome do time</label>
+                        <input class="input" id="abbreviation" type="text" formControlName="abbreviation" placeholder="Abreviação">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Escudo</label>
+                        <input class="input" id="shield_img" type="text" formControlName="shield_img" placeholder="URL da imagem">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-success" (click)="addTeam()" data-bs-dismiss="modal">Adicionar</button>
+            </div>
+      </div>
+    </div>
+</div>

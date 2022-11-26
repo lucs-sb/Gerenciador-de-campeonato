@@ -1,8 +1,14 @@
 package api.championship.manager.controllers;
 
 import api.championship.manager.dtos.PlayerDTO;
+import api.championship.manager.models.Championship;
+import api.championship.manager.models.Player;
 import api.championship.manager.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +20,17 @@ import org.springframework.web.bind.annotation.*;
 public class PlayerController {
     @Autowired
     private PlayerService playerService;
+
+    @GetMapping("/team/{team_id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<Page<Player>> getAllByTeam(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long team_id) throws Exception{
+        try {
+            Page<Player> players = playerService.getAllPlayersByTeam(team_id, pageable);
+            return new ResponseEntity<>(players, HttpStatus.OK);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+    }
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")

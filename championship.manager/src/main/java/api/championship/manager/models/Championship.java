@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -41,6 +42,7 @@ public class Championship {
     @JsonIgnore
     @OneToMany(mappedBy = "championship", cascade = CascadeType.ALL)
     private List<Match> Matches;
+    private LocalDateTime deletionDate;
 
     public Championship(){}
 }

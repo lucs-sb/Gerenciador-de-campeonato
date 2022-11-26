@@ -12,6 +12,6 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
     Optional<Login> findByEmail(String email);
 
     @Query(value = "SELECT * FROM tb_login " +
-            "WHERE user_id = :id", nativeQuery = true)
+            "WHERE user_id = :id AND deletion_date IS NULL", nativeQuery = true)
     Optional<Login> findByUser(Long id);
 }

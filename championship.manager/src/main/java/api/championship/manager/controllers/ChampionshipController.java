@@ -46,10 +46,10 @@ public class ChampionshipController {
 
     @GetMapping(value = "/user/{user_id}/search")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Championship>> getBySearch(@PathVariable Long user_id, @RequestParam("search") String search)
+    public ResponseEntity<Page<Championship>> getBySearch(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "id") Pageable pageable, @PathVariable Long user_id, @RequestParam("search") String search)
             throws Exception {
         try {
-            List<Championship> championships = service.getChampionshipsBySearch(user_id, search);
+            Page<Championship> championships = service.getChampionshipsBySearch(user_id, search, pageable);
             return new ResponseEntity<>(championships, HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e);

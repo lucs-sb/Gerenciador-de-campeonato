@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Match {
     private Team home_team;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-br")
     private Date date;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", locale = "pt-br")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", locale = "pt-br")
     private Date time;
     private String place;
     private String scoreboard;
@@ -37,6 +38,8 @@ public class Match {
     private MatchType type;
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
     private List<Event> events;
+    private LocalDateTime deletionDate;
+    private String journey;
 
     public Match(){}
 }

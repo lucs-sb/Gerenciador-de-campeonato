@@ -1,0 +1,116 @@
+<notifier-container></notifier-container>
+<app-navbar></app-navbar>
+
+<div *ngIf="match" class="row">
+    <div class="card">
+        <div class="card-top">
+            <div class="home-team-card size-m">
+                <div class="home-team">{{match.home_team.name}} <img class="img" src="{{match.home_team.shield_img}}" [hidden]="!match.home_team.shield_img"></div>
+            </div>
+            <div class="scoreboard size-m">
+                {{match.scoreboard}}
+            </div>
+            <div class="scoreboard size-m" [hidden]="match.scoreboard">
+                v
+            </div>
+            <div class="away-team-card size-m">
+                <div class="away-team"><img class="img" src="{{match.away_team.shield_img}}" [hidden]="!match.away_team.shield_img"> {{match.away_team.name}}</div>
+            </div>
+        </div>
+        <div class="card-group">
+            <label>Local</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{match.place}}</p>
+        </div>
+        <div class="card-group">
+            <label>Data</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{match.date}}</p>
+        </div>
+        <div class="card-group">
+            <label>Horário</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{match.time}}</p>
+        </div>
+        <div class="card-group">
+            <label>Status</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{match.status}}</p>
+        </div>
+        <div class="card-group">
+            <label>Partida válida pela</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{match.type}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()" style="margin-right: 5px;">Voltar</button>
+            <div id="btn-create">
+                <a routerLink="#" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar partida</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formMatch" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Local</label>
+                        <input class="input" type="text" formControlName="place" placeholder="local">
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">
+                        <label>Data</label>
+                        <input class="input" type="date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" formControlName="date" placeholder="dd/mm/yyyy">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Horário</label>
+                        <input class="input" type="text" id="time" pattern="([01][0-9]|2[0-3]):[0-5][0-9]" formControlName="time" placeholder="16:00">
+                    </div>
+
+                    <div class="form-outline form-white mb-2">
+                        <label>Placar da partida</label>
+                        <input class="input" type="text" formControlName="scoreboard" placeholder="2 - 1">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label>Status</label>
+                        <select class="form-select" aria-label="Select status" (change)="handleStatusChange($event)">
+                            <option selected>Selecione o status</option>
+                            <option *ngFor="let s of status" [ngValue]="s" formControlName="status">
+                                {{ s }}
+                            </option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-warning" style="margin: 5px" (click)="updateMatch()" data-bs-dismiss="modal">Editar</button>
+            </div>
+      </div>
+    </div>
+</div>
+
+<script>
+    var SPMaskBehavior = function (val) {
+        return val.replace(/\D/g, '')[0] === '2' ? 'AE:CD' : 'AB:CD';
+    },
+    spOptions = {
+    onKeyPress: function(val, e, field, options) {
+        field.mask(SPMaskBehavior.apply({}, arguments), options);
+        },
+        translation: {
+        "A": { pattern: /[0-2]/, optional: false},
+        "B": { pattern: /[0-9]/, optional: false},
+        "C": { pattern: /[0-5]/, optional: false},
+        "D": { pattern: /[0-9]/, optional: false},
+        "E": { pattern: /[0-3]/, optional: false}
+        }
+    };
+
+    $('#time').mask(SPMaskBehavior, spOptions);
+</script>

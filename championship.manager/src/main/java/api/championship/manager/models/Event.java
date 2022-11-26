@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -27,6 +28,7 @@ public class Event {
     private Date time;
     private String description;
     private String value;
+    private LocalDateTime deletionDate;
 
     public Event(){}
 }

@@ -1,0 +1,167 @@
+<app-navbar></app-navbar>
+<notifier-container></notifier-container>
+
+<div *ngIf="team" class="row">
+    <div class="card">
+        <div class="card-top">
+            <img id="img" src="{{team.shield_img}}" alt="" [hidden]="!team.shield_img">
+            <h2>{{team.name | uppercase}}</h2>
+        </div>
+        <div class="modal-footer">
+            <select name="ordination" id="ordination" [(ngModel)]="ordination" style="margin: 3px">
+                <option value="asc">tipo de ordenação</option>
+                <option value="asc">+antigos</option>
+                <option value="desc">+recentes</option>
+                <option value="name">nome</option>
+            </select>
+            <button type="button" class="btn btn-outline-secondary" style="margin: 3px" (click)="getPlayersByTeam()" data-bs-dismiss="modal">Ordenar</button>
+            <div class="input-group-append" style="margin: 3px" >
+                <a routerLink="#" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar</a>
+            </div>
+            <button type="button" class="btn btn-outline-danger" style="margin: 3px" (click)="deleteTeam()" data-bs-dismiss="modal">Excluir time</button>
+            <div class="input-group-append" style="margin: 3px" >
+                <a routerLink="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalAddPlayer">Adicionar jogador</a>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()" style="margin: 3px;">Voltar</button>
+        </div>
+        <div class="card-group">
+            <label>Nome</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{team.name}}</p>
+        </div>
+        <div class="card-group">
+            <label>Abreviação</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{team.abbreviation}}</p>
+        </div>
+        <div class="card-group">
+            <label>URL do escudo</label>
+            <p class="card-title text-center" style="color: rgb(116, 116, 116);">{{team.shield_img}}</p>
+        </div>
+        <div>
+            <h4 style="text-align: center;">Jogadores</h4>
+            <div class="p-5 pt-0">
+                <div class="row">
+                    <div class="col-4 m-2 card heroes" style="width: 18rem; height: 6rem;" *ngFor="let player of players | paginate : { itemsPerPage: pageSize, currentPage: page, totalItems: count};let i = index">
+                        <div class="page">
+                            <label>Nome</label>
+                            <p style="color: rgb(116, 116, 116);">{{player.name}}</p>
+                            <a routerLink="#" class="btn btn-warning" data-bs-toggle="modal" (click)="setPlayerId(player.id)" data-bs-target="#modalPlayer">Editar</a>
+                            <button type="button" class="btn btn-danger delete" title="delete player" (click)="deletePlayer(player)">x</button>
+                        </div>
+                    </div>
+                <div class="mt-3 container">
+                    <div class="page-size">
+                      Itens por busca:
+                      <select (change)="handlePageSizeChange($event)">
+                        <option *ngFor="let size of pageSizes" [ngValue]="size">
+                          {{ size }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="page">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                                <a class="page-link disabled" aria-label="Previous" (click)="handlePageChange('previous')" [hidden]="!previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" id="{{size}}" *ngFor="let size of totalPages"><a class="page-link" (click)="handlePageChange(size)">{{ size }}</a></li>
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Next" (click)="handlePageChange('next')" [hidden]="next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                                <a class="page-link disabled" aria-label="Next" (click)="handlePageChange('next')" [hidden]="!next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar time</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formTeam" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Nome</label>
+                        <input class="input" type="text" formControlName="name" placeholder="Nome">
+                    </div>
+            
+                    <div class="form-outline form-white mb-2">
+                        <label>Abreviação</label>
+                        <input class="input" type="text" formControlName="abbreviation" placeholder="Abreviação">
+                    </div>
+                    
+                    <div class="form-outline form-white mb-2">  
+                        <label>Escudo</label>
+                        <input class="input" type="text" formControlName="shield_img" placeholder="URL da foto">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-warning" style="margin: 5px" (click)="updateTeam()" data-bs-dismiss="modal">Editar</button>
+            </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="modalPlayer" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar jogador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formPlayer" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Nome</label>
+                        <input class="input" type="text" formControlName="name" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-warning" style="margin: 5px" (click)="updatePlayer()" data-bs-dismiss="modal">Editar</button>
+            </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="modalAddPlayer" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar jogador no time</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formPlayer" id="form">
+                    
+                    <div class="form-outline form-white mb-2">
+                        <label>Nome</label>
+                        <input class="input" type="text" formControlName="name" placeholder="Nome">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-outline-warning" style="margin: 5px" (click)="addPlayer()" data-bs-dismiss="modal">Adicionar</button>
+            </div>
+      </div>
+    </div>
+</div>
