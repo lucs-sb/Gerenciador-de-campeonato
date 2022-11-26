@@ -100,7 +100,6 @@ public class MatchService {
             match.get().setTime(newMatch.getTime());
             match.get().setPlace(newMatch.getPlace());
             match.get().setScoreboard(newMatch.getScoreboard());
-            match.get().setType(newMatch.getType());
             match.get().setStatus(newMatch.getStatus());
 
             matchRepository.save(match.get());

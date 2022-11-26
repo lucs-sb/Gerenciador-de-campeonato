@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
@@ -30,6 +31,7 @@ export class ChampionshipDetailComponent implements OnInit {
    * @param {NotifierService} notifier Notifier service
    */
   constructor(notifier: NotifierService,
+    private location: Location,
     private route: ActivatedRoute,
     private storage: StorageService,
     private formBuilder: FormBuilder,
@@ -114,5 +116,9 @@ export class ChampionshipDetailComponent implements OnInit {
 
   handleStatusChange(event: any): void {
     this.formChampionship.value.status = event.target.value;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

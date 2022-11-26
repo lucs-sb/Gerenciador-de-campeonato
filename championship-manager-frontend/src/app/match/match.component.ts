@@ -20,14 +20,6 @@ export class MatchComponent implements OnInit {
   home_team = 0;
   away_team = 0;
   championshipId = this.storage.get('lastSeenChampionshipId');
-  formMatch = this.formBuilder.group({
-    date: '',
-    time: '',
-    place: '',
-    scoreboard: '',
-    status: ''
-  });
-  data: any;
   journey = 'Jornada 1';
   pages = ['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 'Jornada 6'];
   isGroup = false;

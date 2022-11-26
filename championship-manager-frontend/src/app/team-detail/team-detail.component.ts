@@ -227,4 +227,8 @@ export class TeamDetailComponent implements OnInit {
   setPlayerId(id: number): void{
     this.player_id = id;
   }
+
+  goBack(): void {
+    this.location.back();
+  }
 }
