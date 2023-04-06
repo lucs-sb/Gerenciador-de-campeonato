@@ -20,8 +20,6 @@
 - Metodologias e estratégias de ensino/aprendizagem
 - Tecnologia da Informação
 
-## Projeto 3
-
 ## Habilidades
 - Prototipação
 - Programação de computadores
@@ -49,7 +47,6 @@ também será decidida pela equipe: mata-mata, pontos corridos, grupos seguida d
 Uma conta de usuário é necessária para usar o programa. A conta terá nome completo, e-mail, avatar
 e torneios criados.
 
-## Projeto 3
 Cada competição terá os seguintes dados:
 • Nome;
 • Descrição;
