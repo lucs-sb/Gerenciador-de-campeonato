@@ -44,30 +44,29 @@ a implementação.
 Programa para gerenciamento de uma competição esportiva. A modalidade esportiva é definida pela
 equipe, abrangendo desde esportes tradicionais e eSports. A forma de realização da competição
 também será decidida pela equipe: mata-mata, pontos corridos, grupos seguida de mata-mata, etc.
-Uma conta de usuário é necessária para usar o programa. A conta terá nome completo, e-mail, avatar
-e torneios criados.
+Uma conta de usuário é necessária para usar o programa. A conta terá nome completo, e-mail, avatar e torneios criados.
 
 Cada competição terá os seguintes dados:
-• Nome;
-• Descrição;
-• Quantidade de times;
-• Premiação;
-• Forma de competição.
+1. Nome;
+2. Descrição;
+3. Quantidade de times;
+4. Premiação;
+5. Forma de competição.
 
 Uma partida terá:
-• Data;
-• Horário;
-• Local;
-• Dois times;
-• Placar;
-• Momento da pontuação (competidor que marcou o ponto e tempo da partida, como um gol,ganho de um set, etc.);
-• Ao menos 4 estatísticas (nome e valor). Por exemplo: cartões amarelos, chutes ao gol, bloqueios, etc.
+1. Data;
+2. Horário;
+3. Local;
+4. Dois times;
+5. Placar;
+6. Momento da pontuação (competidor que marcou o ponto e tempo da partida, como um gol,ganho de um set, etc.);
+7. Ao menos 4 estatísticas (nome e valor). Por exemplo: cartões amarelos, chutes ao gol, bloqueios, etc.
 
 Um time possuirá:
-• Nome;
-• Imagem do escudo;
-• Abreviação;
-• Nome dos competidores dos times.
+1. Nome;
+2. Imagem do escudo;
+3. Abreviação;
+4. Nome dos competidores dos times.
 
 As funcionalidades do programa são:
 1. Criação de conta;
@@ -85,23 +84,23 @@ Após a conclusão do sorteio, o resultado pode ser alterado, como times, grupos
 Por exemplo, os times listados podem ser reordenadas ou filtrados pelo nome.
 
 O grupo deve elaborar os seguintes diagramas UML do sistema:
-• classe;
-• pacote;
-• caso de uso;
-• sequência;
-• máquina de estados ou transição de estados.
+1. classe;
+2. pacote;
+3. caso de uso;
+4. sequência;
+5. máquina de estados ou transição de estados.
 Em seguida, implementar (ou reestruturar) o código do sistema utilizando os princípios SOLID da orientação a objetos.
 É permitida utilização de qualquer framework para manipulação do BD e emprego de qualquer SGBD.
 
 ## Projeto 3
 ### Metodologia
-• Definição dos requisitos do programa;
-• Elaboração dos diagramas UML;
-• Elaboração do modelo das tabelas do banco de dados;
-• Criação do protótipo;
-• Testes com usuários;
-• Ajustes no protótipo;
-• Correções de erros e problemas.
+1. Definição dos requisitos do programa;
+2. Elaboração dos diagramas UML;
+3. Elaboração do modelo das tabelas do banco de dados;
+5. Criação do protótipo;
+6. Testes com usuários;
+7. Ajustes no protótipo;
+8. Correções de erros e problemas.
 
 ### Critérios do Produto
 Ao final da disciplina a nota atribuída ao projeto será conforme as funcionalidades concluídas e os
